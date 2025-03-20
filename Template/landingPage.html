@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Landing Page</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
         *{
             margin: 0;
             padding: 0;
@@ -20,6 +21,10 @@
             background-color: #D9D9D9;
             padding: 20px;
             /* width: 90vw; */
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background-color: rgba(217, 217, 217, 0.8);
         }
         ul{
             display: flex;
@@ -60,23 +65,73 @@
             height: 70%;
             object-fit: cover;
         }
-        .second-container{
+        .first-container img:nth-child(1):hover,
+        .first-container img:nth-child(3):hover {
+            cursor: pointer;
+        }
+        .first-container img:nth-child(1){
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .first-container img:nth-child(3){
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+        }
+        .second-container {
             margin-top: 5px;
             background-color: #F8F6FF;
             height: 60vh;
             max-width: 100vw;
-            border: 1px solid black;
+            padding: 10px;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .second-container h1 {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            margin: 5px 0 5px 10px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+        }
+        .text-container-aboutUs {
+            margin-right: 20px;
+            width: 382px;
+            height: 325px;
+            background-color: rgba(255, 182, 193, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 5px;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        .text-container-aboutUs h2{
+            font-family: "Ubuntu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+        .text-container-aboutUs p{
+            font-family: "Roboto", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 300;
+            font-style: normal;
+            font-variation-settings:
+              100;
         }
         .third-container{
             margin-top: 5px;
             background-color: #F8F6FF;
             height: 20vh;
             max-width: 100vw;
-            border: 1px solid black;
         }
         section{
             padding: 10px;
         }
+       
     </style>
 </head>
 <body>
@@ -91,12 +146,18 @@
     </nav>
     <section>
         <div class="first-container">
+            <img src="lArrow.svg" alt="">
             <img src="https://images.unsplash.com/photo-1741807117240-0aee0cd41d25?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Mountain Image">
+            <img src="rArrow.svg" alt="">
         </div>
     </section>
     <section>
         <div class="second-container">
-            
+            <h1>About us here</h1>
+            <div class="text-container-aboutUs">
+                <h4>About Us</h4>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint numquam dolores quod enim consequatur? Autem animi officia, ut, nulla sit hic deleniti consequuntur modi libero, unde culpa mollitia. Vitae, repellendus.</p>
+            </div>
         </div>
     </section>
     <section>
