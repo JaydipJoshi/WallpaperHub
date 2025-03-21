@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up Page</title>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://sets.hugeicons.com/YOUR-SET-ID.css" crossorigin="anonymous">
     <style>
         body {
-            background-color: #f7fafc;
+            background-color: #F3F4F8;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -40,7 +41,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 64px);
+            height: 70vh;
         }
         .form-container {
             width: 100%;
@@ -88,6 +89,7 @@
             width: 80%;
             display: block;
             margin: 0 auto;
+            margin-bottom: 16px;
         }
         .form-container p {
             margin-top: 16px;
@@ -124,11 +126,22 @@
             text-align: center;
             font-size: 0.875rem;
             color: #718096;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
         footer a {
             margin: 0 8px;
             color: #3182ce;
             text-decoration: none;
+        }
+        .or-space{
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            margin: 16px 0;
+            color: #4a5568;
         }
     </style>
 </head>
@@ -144,11 +157,16 @@
             <h2>Login</h2>
             <form>
                 <label for="email">Email ID</label>
-                <input id="email" type="email" placeholder="Ex: example@gmail.com">
+                <input id="email" type="email" placeholder="Ex: example@gmail.com" required>
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="********">
+                <input id="password" type="password" placeholder="********" required>
                 <button type="button">Login</button>
-                <div style="margin-top: 16px;"></div>
+                <!-- <div style="margin-top: 16px;"></div> -->
+                <div class="or-space">
+                    <img src="line.svg" alt="">
+                    or
+                    <img src="line.svg" alt="">
+                </div>
                     <button class="g-btn">
                         <img src="https://img.icons8.com/?size=100&id=36987&format=png&color=000000" alt="Google Icon" >
                         Sign in with Google

@@ -40,7 +40,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 64px);
+            height: 70vh;
         }
         .form-container {
             width: 100%;
@@ -102,6 +102,9 @@
             text-align: center;
             font-size: 0.875rem;
             color: #718096;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
         footer a {
             margin: 0 8px;
@@ -114,8 +117,7 @@
     <header>
         <div class="logo">LOGO</div>
         <div>
-            <button>Explore</button>
-            <button>Login</button>
+            <a href="landingPage.html"><button>Home</button></a>
         </div>
     </header>
     <main>
@@ -123,11 +125,11 @@
             <h2>Sign Up</h2>
             <form>
                 <label for="email">Email ID</label>
-                <input id="email" type="email" placeholder="Ex: example@gmail.com">
+                <input id="email" type="email" placeholder="Ex: example@gmail.com" required>
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="********">
+                <input id="password" type="password" placeholder="********" required>
                 <label for="confirm-password">Confirm Password</label>
-                <input id="confirm-password" type="password" placeholder="********">
+                <input id="confirm-password" type="password" placeholder="********" required>
                 <button type="button">Sign Up</button>
                 <p>Already a User Yet? <a href="loginPage.html">Login</a></p>
             </form>
