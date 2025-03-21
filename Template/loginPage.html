@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        body {
+            background-color: #f7fafc;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #e2e8f0;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+        header .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        header button {
+            background-color: #65558F;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        header button:last-child {
+            margin-right: 0;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 64px);
+        }
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .form-container label {
+            display: block;
+            color: #4a5568;
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+        .form-container input:focus {
+            outline: none;
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+        }
+        .form-container button {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 80%;
+            display: block;
+            margin: 0 auto;
+        }
+        .form-container p {
+            margin-top: 16px;
+            text-align: center;
+            color: #718096;
+        }
+        .form-container p a {
+            color: #3182ce;
+            text-decoration: none;
+        }
+        .g-btn{
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            background-color: white; 
+            color: #4a5568; 
+            border: 1px solid #cbd5e0; 
+            padding: 10px 16px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-weight: bold;
+        }
+        .g-btn img{
+            width: 20px; 
+            height: 20px; 
+            display: inline-block; 
+            vertical-align: middle;
+        }
+        footer {
+            background-color: #edf2f7;
+            padding: 16px;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        footer a {
+            margin: 0 8px;
+            color: #3182ce;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">LOGO</div>
+        <div>
+            <a href="landingPage.html"><button>Home</button></a>
+        </div>
+    </header>
+    <main>
+        <div class="form-container">
+            <h2>Login</h2>
+            <form>
+                <label for="email">Email ID</label>
+                <input id="email" type="email" placeholder="Ex: example@gmail.com">
+                <label for="password">Password</label>
+                <input id="password" type="password" placeholder="********">
+                <button type="button">Login</button>
+                <div style="margin-top: 16px;"></div>
+                    <button class="g-btn">
+                        <img src="https://img.icons8.com/?size=100&id=36987&format=png&color=000000" alt="Google Icon" >
+                        Sign in with Google
+                    </button>
+                    <p>Don't have an account? <a href="signUpPage.html">sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <a href="#">Terms of service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">About Us</a>
+    </footer>
+</body>
+</html>
