@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Home Page</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: #FFFFFF;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #D9D9D9;
+            padding: 20px;
+            width: 96vw;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background-color: rgba(217, 217, 217, 0.8);
+        }
+        ul{
+            display: flex;
+        }
+        ul li{
+            list-style: none;
+            margin: 0 10px;
+        }
+        .nav-links{
+            gap: 14px;
+        }
+        .nav-links button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 10px 30px 10px 30px;
+            border-radius: 50px;
+            border: none;
+            width: 74px;
+            height: 31px;
+            background-color: #65558F;
+        }
+        .nav-links a{
+            text-decoration: none;
+        }
+        .nav-links button:hover{
+            cursor: pointer;
+        }
+        .nav-links button.user-icon {
+            background-color: transparent;
+            transform: scale(1.5); 
+            border-radius: 50%;
+            padding: 0;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+            margin-left: 20px;
+            position: sticky;
+            top: 70px; 
+            z-index: 100;
+            background-color: white;
+            padding: 10px;
+        }
+        .search input {
+            width: 700px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            background-color: #F8F6FF !important; 
+            font-size: 16px;
+            border: none;
+            outline: none;
+            padding-right: 50px;
+            padding-left: 30px; 
+            background: url('search.svg') no-repeat right 10px center;
+            background-size: 20px 20px;
+        }
+        .search input:focus {
+            box-shadow: 0 0 10px #A29BFE;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 30px auto;
+            padding: 10px 50px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .box {
+            width: 100%;
+            height: 280px;
+            background-color: #dddae6;
+            border-radius: 10px;
+        }
+        .explore-more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            flex-direction: row;
+        }
+        .explore-more img {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+        }
+        .explore-more p {
+            color: #65558F;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            margin-right: 5px;
+        }
+        footer {
+            background-color: #edf2f7;
+            padding: 16px;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #718096;
+            /* position: fixed;
+            bottom: 0; */
+            width: 95vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* margin-left: 15px ; */
+        }
+        footer a {
+            margin: 0 8px;
+            color: #3182ce;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>Logo</li>
+        </ul>
+        <ul class="nav-links">
+            <button class="user-icon"><img src="userIcon.svg" alt=""></button>
+            <a href="landingPage.html"><button>Logout</button></a>
+        </ul>
+    </nav>
+    <div class="search">
+        <input type="text" placeholder="Search here">
+    </div>
+    <main>
+        <div class="box box1"></div>
+        <div class="box box2"></div>
+        <div class="box box3"></div>
+        <div class="box box4"></div>
+        <div class="box box5"></div>
+        <div class="box box6"></div>
+        <div class="box box7"></div>
+        <div class="box box8"></div>
+    </main>
+    <div class="explore-more">
+        <p>Explore More 
+            <img src="downArrow.svg" alt="">
+        </p>
+    </div>
+    <footer>
+        <a href="#">Terms of service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">About Us</a>
+    </footer>
+</body>
+</html>
