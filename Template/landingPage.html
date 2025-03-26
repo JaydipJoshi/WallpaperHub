@@ -164,6 +164,7 @@
     </style>
 </head>
 <body>
+    {% load static %}
     <nav>
         <ul>
             <li class="logo">
@@ -178,9 +179,9 @@
     </nav>
     <section>
         <div class="first-container">
-            <img src="lArrow.svg" alt="">
+            <img src="{% static 'Template/lArrow.svg' %}" alt="Left Arrow">
             <img src="https://images.unsplash.com/photo-1741807117240-0aee0cd41d25?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Mountain Image">
-            <img src="rArrow.svg" alt="">
+            <img src="{% static 'Template/rArrow.svg' %}" alt="Right Arrow">
         </div>
     </section>
     <section>
