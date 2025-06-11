@@ -1,0 +1,49 @@
+/* Fix for login button visibility in category preview */
+.btn.btn-outline-light.btn-lg.px-4.py-2.rounded-pill {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+}
+
+/* Target the specific section in category preview */
+section[style*="background-color: var(--primary)"] .btn.btn-outline-light {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+}
+
+/* Ensure the button is visible in both light and dark themes */
+[data-theme="dark"] .btn.btn-outline-light.btn-lg.px-4.py-2.rounded-pill {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    display: inline-block !important;
+}
+
+[data-theme="dark"] section[style*="background-color: var(--primary)"] .btn.btn-outline-light {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    display: inline-block !important;
+}
+
+/* Ensure proper hover effects */
+.btn.btn-outline-light.btn-lg.px-4.py-2.rounded-pill:hover,
+section[style*="background-color: var(--primary)"] .btn.btn-outline-light:hover {
+    background-color: #fff !important;
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .btn.btn-outline-light.btn-lg.px-4.py-2.rounded-pill:hover,
+[data-theme="dark"] section[style*="background-color: var(--primary)"] .btn.btn-outline-light:hover {
+    background-color: #fff !important;
+    color: var(--primary) !important;
+}

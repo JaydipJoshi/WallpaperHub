@@ -1,0 +1,66 @@
+/* Cursor Fix CSS */
+
+/* Fix cursor for all interactive elements */
+a,
+button,
+.btn,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+[role="button"] {
+    cursor: pointer !important;
+}
+
+/* Specific fixes for footer links */
+footer a,
+footer li a,
+.footer-section a,
+.list-unstyled a {
+    cursor: pointer !important;
+}
+
+/* Specific fix for Explore More button */
+.explore-more-btn {
+    cursor: pointer !important;
+}
+
+/* Fix for any elements that might have text cursor */
+.explore-more-btn,
+footer a,
+.nav-item,
+.drawer-item,
+.dropdown-item,
+.text-muted.text-decoration-none,
+.text-decoration-none {
+    cursor: pointer !important;
+    user-select: none;
+}
+
+/* Fix for any elements with pointer-events: none */
+.explore-more-btn *,
+footer a *,
+.nav-item *,
+.drawer-item *,
+.dropdown-item *,
+.text-muted.text-decoration-none *,
+.text-decoration-none * {
+    pointer-events: auto !important;
+}
+
+/* Fix for category links in footer */
+.col-sm-6.col-md-4.col-lg-2 a,
+.col-sm-6.col-md-4.col-lg-2 a:hover,
+.col-sm-6.col-md-4.col-lg-2 a:focus,
+.col-sm-6.col-md-4.col-lg-2 a:active {
+    cursor: pointer !important;
+}
+
+/* Global fix for all anchor tags */
+a[href] {
+    cursor: pointer !important;
+}
+
+/* Fix for marquee items */
+.marquee-item {
+    cursor: pointer !important;
+}

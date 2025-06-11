@@ -1,0 +1,2812 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>User Home Page</title>
+
+    <!-- Easter Egg Loader CSS - Load this first for immediate display -->
+    <link rel="stylesheet" href="{% static 'css/easter-egg-loader.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/smooth-scroll.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sun-moon-toggle.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="{% static 'css/search-shortcut.css' %}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{% static 'css/new-content-highlight.css' %}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{% static 'css/cursor-fix.css' %}">
+
+    <!-- Defer Font Awesome loading -->
+    <script src="https://kit.fontawesome.com/6a72a8e32d.js" crossorigin="anonymous" defer></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Mobile Dropdown Styles */
+      .mobile-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--bg-color);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        min-width: 200px;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .mobile-dropdown .dropdown-menu {
+        padding: 10px 0;
+      }
+
+      .mobile-dropdown .dropdown-header {
+        padding: 10px 15px;
+        font-weight: bold;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 5px;
+      }
+
+      .mobile-dropdown .dropdown-item {
+        display: block;
+        padding: 8px 15px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .mobile-dropdown .dropdown-item:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .mobile-profile {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .mobile-profile.active .mobile-dropdown {
+        display: block;
+      }
+
+      /* Toast Notification Styles */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+      .toast-notification {
+        display: flex;
+        flex-direction: column;
+        min-width: 300px;
+        max-width: 400px;
+        background-color: white;
+        color: #333;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        animation: slideIn 0.5s ease forwards;
+        position: relative;
+      }
+
+      .toast-notification.success {
+        border-left: 5px solid #4caf50;
+      }
+
+      .toast-notification.error {
+        border-left: 5px solid #f44336;
+      }
+
+      .toast-notification.warning {
+        border-left: 5px solid #ff9800;
+      }
+
+      .toast-notification.info {
+        border-left: 5px solid #2196f3;
+      }
+
+      .toast-content {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+      }
+
+      .toast-icon {
+        font-size: 24px;
+        margin-right: 15px;
+      }
+
+      .toast-notification.success .toast-icon {
+        color: #4caf50;
+      }
+
+      .toast-notification.error .toast-icon {
+        color: #f44336;
+      }
+
+      .toast-notification.warning .toast-icon {
+        color: #ff9800;
+      }
+
+      .toast-notification.info .toast-icon {
+        color: #2196f3;
+      }
+
+      .toast-message {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .toast-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #999;
+      }
+
+      .toast-progress {
+        height: 4px;
+        background-color: rgba(0, 0, 0, 0.1);
+        width: 100%;
+      }
+
+      .toast-progress::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        width: 100%;
+        background-color: currentColor;
+        animation: progress 5s linear forwards;
+      }
+
+      .toast-notification.success .toast-progress::before {
+        background-color: #4caf50;
+      }
+
+      .toast-notification.error .toast-progress::before {
+        background-color: #f44336;
+      }
+
+      .toast-notification.warning .toast-progress::before {
+        background-color: #ff9800;
+      }
+
+      .toast-notification.info .toast-progress::before {
+        background-color: #2196f3;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes progress {
+        from {
+          width: 100%;
+        }
+        to {
+          width: 0%;
+        }
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--navbar-bg);
+        padding: 15px 20px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        box-shadow: 0 2px 10px var(--card-shadow);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 10px 15px;
+          position: sticky;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          background-color: var(--navbar-bg);
+        }
+
+        body {
+          padding-top: 0;
+          overflow-x: hidden;
+          background-color: var(--bg-color);
+        }
+
+        .search-container {
+          max-width: 100%;
+          border-radius: 8px;
+          flex-direction: column;
+        }
+
+        .search {
+          margin-top: 0;
+          margin-bottom: 30px;
+          padding: 10px 15px;
+        }
+
+        .search input {
+          border-radius: 8px;
+          font-size: 14px;
+          border-radius: 8px 8px 0 0;
+        }
+
+        .search-button {
+          border-radius: 0 0 8px 8px;
+          width: 100%;
+          margin-top: 0;
+        }
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #65558f;
+        flex: 1;
+      }
+      .logo img {
+        margin-right: 8px;
+        width: 30px;
+        height: 30px;
+      }
+
+      .menu-toggle {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--text-color);
+        margin-left: auto;
+      }
+      @media (min-width: 768px) {
+        /* Desktop styles */
+        .profile-toggle {
+          display: block;
+        }
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+          margin-left: auto;
+          margin-right: 0;
+          order: 3;
+          text-align: right;
+          flex: 0 0 auto;
+        }
+
+        .desktop-only,
+        .profile-toggle,
+        .profile-photo {
+          display: none !important;
+        }
+
+        nav ul {
+          justify-content: space-between;
+          width: 100%;
+          padding: 0 5px;
+        }
+
+        .logo {
+          order: 1;
+        }
+      }
+      ul {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+      }
+      ul li {
+        list-style: none;
+        margin: 0 10px;
+      }
+      .nav-links {
+        gap: 14px;
+        display: flex;
+        align-items: center;
+      }
+      .nav-links button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 50px;
+        border: none;
+        background-color: #65558f;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+      }
+
+
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-color);
+      }
+
+      .nav-links .nav-item {
+        display: inline-block;
+        padding: 8px 15px;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+      }
+
+      .nav-links .nav-item:hover {
+        background-color: rgba(101, 85, 143, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Profile toggle styling */
+      .profile-toggle {
+        cursor: pointer;
+        position: relative;
+        z-index: 1001;
+      }
+
+      .profile-toggle .profile-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #65558f;
+        transition: all 0.3s ease;
+      }
+
+      .profile-toggle .profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .profile-toggle:hover .profile-photo {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(101, 85, 143, 0.3);
+      }
+
+      /* Side drawer styling */
+      .side-drawer {
+        position: fixed;
+        top: 0;
+        right: -300px; /* Start off-screen */
+        width: 280px;
+        height: 100vh;
+        background-color: var(--card-bg);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 768px) {
+        .side-drawer {
+          width: 250px;
+        }
+      }
+
+      .side-drawer.active {
+        right: 0; /* Slide in */
+      }
+
+      .drawer-header {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-email {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-color);
+        word-break: break-word;
+        max-width: 180px;
+      }
+
+      .close-drawer {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--text-color);
+      }
+
+      .drawer-divider {
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin: 0 20px;
+      }
+
+      .drawer-links {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .drawer-links li {
+        list-style: none;
+        margin-bottom: 15px;
+      }
+
+      .drawer-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-radius: 8px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .drawer-item i {
+        margin-right: 15px;
+        font-size: 18px;
+      }
+
+      .drawer-item:hover {
+        background-color: rgba(101, 85, 143, 0.1);
+      }
+
+      .drawer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1999;
+        display: none;
+      }
+
+      .drawer-overlay.active {
+        display: block;
+      }
+
+      /* Responsive spacer */
+      .responsive-spacer {
+        height: 20px;
+        width: 100%;
+        clear: both;
+      }
+
+      @media (max-width: 768px) {
+        .responsive-spacer {
+          height: 40px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .responsive-spacer {
+          height: 50px;
+        }
+      }
+      .nav-links button:hover {
+        background-color: #534979;
+        transform: translateY(-2px);
+      }
+
+
+      /* User Profile Styles */
+      .user-profile {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+
+      .profile-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #65558f;
+        transition: all 0.3s ease;
+      }
+
+      .profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .user-profile:hover .profile-photo {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(101, 85, 143, 0.5);
+      }
+
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px var(--card-shadow);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        margin-top: 10px;
+      }
+
+      .user-profile:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(5px);
+      }
+
+      .dropdown-menu {
+        padding: 10px 0;
+      }
+
+      .dropdown-header {
+        padding: 10px 15px;
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background-color: var(--border-color, #eee);
+        margin: 5px 0;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .dropdown-item i {
+        margin-right: 10px;
+        font-size: 16px;
+        color: #65558f;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f8f6ff;
+        color: #65558f;
+      }
+
+
+      [data-theme="dark"] .dropdown-item:hover {
+        background-color: #1E2433;
+        color: #6D9CFF;
+      }
+
+      [data-theme="dark"] .mobile-dropdown,
+      [data-theme="dark"] .user-dropdown {
+        background-color: var(--card-bg);
+        box-shadow: 0 5px 15px var(--card-shadow);
+      }
+
+      [data-theme="dark"] .dropdown-header,
+      [data-theme="dark"] .dropdown-item {
+        color: var(--text-color);
+      }
+
+      [data-theme="dark"] .dropdown-divider {
+        border-color: var(--border-color);
+      }
+      .mobile-profile {
+        display: none;
+        cursor: pointer;
+        position: relative;
+        z-index: 1001;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-profile .profile-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #65558f;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .mobile-profile.active .profile-photo {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(101, 85, 143, 0.5);
+      }
+
+      .mobile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px var(--card-shadow);
+        display: none;
+        z-index: 1000;
+        margin-top: 5px;
+        overflow: hidden;
+      }
+
+      .mobile-profile.active .mobile-dropdown {
+        display: block;
+      }
+      @media (max-width: 768px) {
+        .mobile-profile {
+          display: block !important;
+          z-index: 1001; /* Ensure it's above other elements */
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .menu-toggle {
+          margin-left: auto;
+          margin-right: 2px;
+        }
+
+        .mobile-dropdown {
+          position: absolute;
+          top: 55px;
+          right: 0;
+          width: 200px;
+          background-color: var(--card-bg);
+          border-radius: 8px;
+          box-shadow: 0 5px 15px var(--card-shadow);
+          z-index: 1002;
+          display: none;
+          padding: 5px 0;
+          overflow: hidden;
+        }
+
+        .mobile-dropdown .dropdown-menu {
+          width: 100%;
+        }
+
+        .mobile-dropdown .dropdown-item {
+          padding: 10px 15px;
+          display: block;
+          text-decoration: none;
+          color: var(--text-color);
+          transition: background-color 0.2s ease;
+        }
+
+        .mobile-dropdown .dropdown-item:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+        .nav-links {
+          display: none; /* Hide the nav links on mobile by default */
+          position: absolute;
+          top: 60px;
+          right: 0;
+          background-color: var(--card-bg);
+          width: 200px;
+          padding: 15px;
+          border-radius: 8px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          z-index: 25; /* Higher than search but lower than profile dropdown */
+        }
+
+        .nav-links.active {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .nav-links li {
+          width: 100%;
+          margin: 5px 0;
+          text-align: center;
+          list-style: none;
+        }
+
+        .nav-links .nav-item {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .nav-links button {
+          width: 150px;
+        }
+        .user-profile {
+          margin: 10px 0 20px 0;
+        }
+
+        .user-dropdown {
+          position: static;
+          width: 100%;
+          max-width: 250px;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          margin-top: 10px;
+          display: none;
+        }
+
+        .user-profile:hover .user-dropdown {
+          display: block;
+        }
+
+        /* Hide desktop profile when mobile profile is shown */
+        .nav-links .user-profile {
+          display: none;
+        }
+
+        .profile-photo {
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .nav-links button.user-icon {
+        background-color: transparent;
+        transform: scale(1.5);
+        border-radius: 50%;
+        padding: 0;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        margin-top: 80px; /* Increased to account for fixed nav */
+        position: relative;
+        position: sticky;
+        top: 70px;
+        z-index: 10; /* Lower z-index to prevent overlap with dropdown */
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+
+      @media (max-width: 768px) {
+        .search {
+          margin-top: 10px;
+          margin-bottom: 20px;
+        }
+      }
+      .search-container {
+        display: flex;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .search-input-wrapper {
+        position: relative;
+        flex: 1;
+        z-index: 1000;
+      }
+      .search input {
+        width: 100%;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 30px 0 0 30px;
+        background-color: #f8f6ff;
+        font-size: 16px;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+      /* Search Suggestions Styling */
+      #search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        margin-top: 5px;
+        border: 1px solid #e0e0e0;
+      }
+      #search-suggestions.active {
+        display: block;
+      }
+      .suggestion-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        border-bottom: 1px solid #f0f0f0;
+        color: #333;
+      }
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+      .suggestion-item:hover {
+        background-color: #f8f6ff;
+        padding-left: 25px;
+      }
+      .suggestion-item.selected {
+        background-color: #f0ebff;
+        font-weight: 500;
+        padding-left: 25px;
+      }
+      .search input:focus {
+        box-shadow: 0 0 10px #a29bfe inset;
+      }
+      .search-button {
+        padding: 15px 30px;
+        background-color: #65558f;
+        color: white;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .search-button:hover {
+        background-color: #534979;
+      }
+      @media (max-width: 768px) {
+        .search {
+          margin-top: 0;
+          padding: 15px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .search-container {
+          flex-direction: column;
+          border-radius: 15px;
+          width: 100%;
+          max-width: 100%;
+        }
+        .search input {
+          border-radius: 15px 15px 0 0;
+          padding: 15px;
+          font-size: 14px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .search-button {
+          border-radius: 0 0 15px 15px;
+          padding: 12px;
+          width: 100%;
+          margin-top: 0;
+        }
+
+        /* Ensure the search container is properly positioned below the nav */
+        .search {
+          position: relative;
+          z-index: 5; /* Lower z-index to prevent overlap with dropdown */
+          margin-top: 0; /* Remove space between navbar and search */
+        }
+
+        /* Improve profile toggle positioning */
+        .profile-toggle {
+          position: relative;
+          z-index: 20;
+          margin-left: 10px;
+        }
+
+        /* Ensure the mobile dropdown is properly positioned */
+        .profile-toggle .mobile-dropdown {
+          position: absolute;
+          top: 60px;
+          right: 0;
+          z-index: 30;
+        }
+      }
+      @media (max-width: 480px) {
+        .search {
+          margin-top: 0;
+          margin-bottom: 40px;
+          padding: 10px;
+        }
+        .search input {
+          padding: 12px 15px;
+        }
+        .search-button {
+          padding: 12px;
+        }
+        main {
+          column-count: 1;
+          padding: 10px;
+          margin-top: 20px;
+        }
+        .box {
+          margin-bottom: 15px;
+        }
+        .featured-title {
+          text-align: left;
+          margin-left: 10px;
+          margin-top: 40px;
+          padding-top: 10px;
+        }
+      }
+      .featured-title {
+        text-align: center;
+        margin: 30px 0 10px;
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+        width: 100%;
+      }
+
+      @media (max-width: 768px) {
+        .featured-title {
+          font-size: 20px;
+          text-align: left;
+          margin-left: 10px;
+          margin-top: 30px;
+          clear: both;
+          display: block;
+        }
+      }
+      main {
+        column-count: 4;
+        column-gap: 15px;
+        padding: 30px 50px;
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+
+      @media (max-width: 768px) {
+        main {
+          column-count: 2;
+          padding: 15px;
+        }
+      }
+      @media (max-width: 1200px) {
+        main {
+          column-count: 3;
+          padding: 20px 40px;
+        }
+      }
+      @media (max-width: 900px) {
+        main {
+          column-count: 2;
+          padding: 15px 30px;
+        }
+      }
+      @media (max-width: 600px) {
+        main {
+          column-count: 2;
+          padding: 10px 15px;
+          column-gap: 10px;
+        }
+        .box {
+          margin-bottom: 0;
+        }
+        .featured-title {
+          font-size: 20px;
+          margin: 20px 0 10px;
+        }
+        .img-loading-wrapper {
+          min-height: 200px;
+        }
+        .box img {
+          min-height: 200px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        main {
+          column-count: 2;
+          padding: 10px;
+          column-gap: 15px;
+        }
+        .box {
+          margin-bottom: 0;
+          width: 100%;
+        }
+        .img-loading-wrapper {
+          min-height: 180px;
+        }
+      }
+      .box {
+        width: 100%;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 15px; /* Add margin between items */
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        break-inside: avoid; /* Critical for masonry layout */
+        display: inline-block; /* Important for masonry layout */
+      }
+
+      /* Masonry layout will be handled by JavaScript */
+      .box:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .box:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .box:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .box:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .box:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .box:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .box:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .box:nth-child(8) {
+        animation-delay: 0.8s;
+      }
+      .box img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        object-fit: cover;
+        position: relative;
+        z-index: 2;
+        max-height: none; /* Remove max-height to allow natural height */
+      }
+      .box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+      .box:hover img {
+        transform: scale(1.03);
+      }
+      .box .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        padding: 15px;
+        color: white;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .box:hover .overlay {
+        opacity: 1;
+      }
+      .no-results {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #f8f6ff;
+        border-radius: 10px;
+        margin: 30px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .no-results h2 {
+        color: #65558f;
+        margin-bottom: 15px;
+      }
+      .no-results p {
+        color: #666;
+        font-size: 16px;
+      }
+
+
+
+
+
+
+
+
+      .button:hover {
+        background-color: #6207a7; /* Darker purple shade for hover */
+        transform: translateY(-3px); /* Slight lift effect on hover */
+        box-shadow: 0 6px 15px rgba(120, 8, 208, 0.6); /* Enhanced shadow on hover */
+        cursor: pointer !important;
+      }
+
+      .button:active {
+        transform: translateY(1px); /* Press effect */
+        box-shadow: 0 2px 8px rgba(120, 8, 208, 0.4); /* Reduced shadow when pressed */
+        transition: all 0.1s ease; /* Faster transition for active state */
+      }
+
+      /* Add a focus state for accessibility */
+      .button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(120, 8, 208, 0.3), 0 6px 15px rgba(120, 8, 208, 0.6);
+      }
+
+      /* Ensure the button is visible during all states */
+      .button:hover, .button:active, .button:focus {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .button:hover .button__icon-wrapper {
+        color: #000;
+      }
+
+      .button__icon-svg,
+      .button__icon-svg--copy {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        width: 14px; /* Fixed width for consistency */
+        height: 14px; /* Fixed height for consistency */
+        fill: currentColor;
+        display: block; /* Ensure proper display */
+      }
+
+      .button__icon-svg--copy {
+        position: absolute;
+        transform: translate(-150%, 150%);
+        opacity: 0; /* Start hidden */
+      }
+
+      .button:hover .button__icon-svg:first-child {
+        transition: transform 0.3s ease-in-out, opacity 0.2s ease;
+        transform: translate(150%, -150%);
+        opacity: 0; /* Hide on hover */
+        pointer-events: auto !important;
+      }
+
+      .button:hover .button__icon-svg--copy {
+        transition: transform 0.3s ease-in-out 0.1s, opacity 0.3s ease 0.1s;
+        transform: translate(0);
+        opacity: 1; /* Show on hover */
+        pointer-events: auto !important;
+      }
+
+      /* Fix SVG positioning within the icon wrapper */
+      .button__icon-wrapper svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 14px;
+        height: 14px;
+      }
+
+      /* Disabled state for the button */
+      .button:disabled {
+        background-color: #7808d0; /* Keep the same color to avoid visual disruption */
+        cursor: wait; /* Show wait cursor when loading */
+        opacity: 0.9; /* Slightly dimmed but still visible */
+        transform: none; /* No transform when disabled */
+        box-shadow: 0 4px 10px rgba(120, 8, 208, 0.3); /* Lighter shadow when disabled */
+      }
+
+      .button:disabled:hover {
+        background-color: #7808d0; /* Keep the same color */
+        transform: none; /* No transform on hover when disabled */
+        box-shadow: 0 4px 10px rgba(120, 8, 208, 0.3); /* Keep the same shadow */
+      }
+
+      .button:disabled .button__icon-wrapper {
+        color: #7808d0; /* Keep the same color */
+        opacity: 0.7; /* Slightly dimmed */
+        animation: pulse 1.5s infinite ease-in-out; /* Add pulsing animation */
+      }
+
+      .button:disabled:hover .button__icon-wrapper {
+        color: #7808d0; /* Keep the same color */
+      }
+
+      /* Loading animation for the button */
+      @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.7; }
+      }
+
+      /* Loading spinner animation */
+      .button__loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s infinite linear;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+
+
+
+        /* Responsive styles for new button */
+        .button {
+          padding: 0.5rem 1rem;
+          padding-left: 12px;
+          font-size: 13px;
+          width: 80%;
+          max-width: 250px;
+          min-height: 50px; /* Increased height for better touch target */
+          position: relative;
+          z-index: 1002;
+          pointer-events: auto !important;
+        }
+
+        .button__icon-wrapper {
+          width: 20px;
+          height: 20px;
+        }
+
+        /* Ensure footer doesn't overlap */
+        footer {
+          margin-top: 120px;
+          z-index: 990;
+        }
+      
+      .img-loading-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.05); /* Very subtle background */
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        aspect-ratio: auto; /* Allow natural aspect ratio */
+        transform: translateZ(0); /* Force hardware acceleration */
+        will-change: transform; /* Hint to browser for optimization */
+      }
+      .loading-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.03) 75%);
+        background-size: 200% 100%;
+        animation: loadingAnimation 1.5s infinite;
+        z-index: 1;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        opacity: 0.8;
+      }
+
+      /* Hide loading placeholder when image is loaded */
+      .img-loading-wrapper img.loaded + .loading-placeholder,
+      .img-loading-wrapper img:not([loading]) + .loading-placeholder {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* Ensure images are visible and properly loaded */
+      .img-loading-wrapper img {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        transform: translateZ(0); /* Force hardware acceleration */
+        backface-visibility: hidden; /* Prevent flickering */
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        perspective: 1000;
+      }
+
+      .img-loading-wrapper img.loaded {
+        opacity: 1;
+      }
+      @keyframes loadingAnimation {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      .results {
+        column-count: 4;
+        column-gap: 15px;
+        padding: 30px 50px;
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+      @media (max-width: 1200px) {
+        .results {
+          column-count: 3;
+          padding: 20px 40px;
+        }
+      }
+      @media (max-width: 900px) {
+        .results {
+          column-count: 2;
+          padding: 15px 30px;
+        }
+      }
+      @media (max-width: 600px) {
+        .results {
+          column-count: 2;
+          padding: 10px 15px;
+          column-gap: 10px;
+        }
+        .results .wallpaper-item {
+          margin-bottom: 0;
+        }
+        .results .wallpaper-item .img-loading-wrapper {
+          min-height: 200px;
+        }
+        .results .wallpaper-item img {
+          min-height: 200px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .results {
+          column-count: 2;
+          padding: 10px;
+          column-gap: 15px;
+        }
+        .results .wallpaper-item {
+          margin-bottom: 0;
+          width: 100%;
+          display: block;
+        }
+        .results .wallpaper-item .img-loading-wrapper {
+          min-height: 180px;
+        }
+      }
+      .results .wallpaper-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 15px; /* Add margin between items */
+        width: 100%;
+        opacity: 1;
+        animation: fadeIn 0.5s ease forwards;
+        background-color: #fff;
+        break-inside: avoid; /* Critical for masonry layout */
+        display: inline-block; /* Important for masonry layout */
+      }
+
+      /* Masonry layout for search results will be handled by JavaScript */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0.3;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .results .wallpaper-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+        transition: transform 0.5s ease;
+        z-index: 2; /* Ensure image is above loading placeholder */
+        position: relative; /* Needed for z-index to work */
+        object-fit: cover;
+        max-height: none; /* Remove max-height to allow natural height */
+      }
+      .results .wallpaper-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+      }
+      .results .wallpaper-item:hover img {
+        transform: scale(1.03);
+      }
+      .results .wallpaper-item .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        padding: 15px;
+        color: white;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .results .wallpaper-item:hover .overlay {
+        opacity: 1;
+      }
+
+      footer {
+        background-color: #edf2f7;
+        padding: 16px;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #718096;
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        z-index: 990;
+        margin-top: 50px;
+        clear: both; /* Ensure it clears any floated elements */
+        pointer-events: auto; /* Ensure footer links are clickable */
+      }
+
+      footer a {
+        margin: 0 8px;
+        color: #3182ce;
+        text-decoration: none;
+        padding: 5px;
+        cursor: pointer !important;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Dark theme support for footer */
+      [data-theme="dark"] footer {
+        background-color: #161B27;
+      }
+
+      [data-theme="dark"] footer a {
+        color: #63B3ED;
+      }
+
+      [data-theme="dark"] footer a:hover {
+        color: #90CDF4;
+      }
+
+      @media (max-width: 480px) {
+        footer {
+          flex-direction: column;
+          gap: 10px;
+          padding: 15px;
+        }
+        footer a {
+          margin: 5px 0;
+        }
+      }
+      #backToTopButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #65558f; /* Change to your preferred color */
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+        z-index: 9999;
+        right: 0;
+        border-radius: 10px 0px 0px 10px;
+      }
+      .fa-arrow-up{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 12px;
+      }
+      #backToTopButton.show {
+        opacity: 1;
+        visibility: visible;
+      }
+      /* Additional mobile styles */
+      @media (max-width: 480px) {
+        /* Mobile-specific styles */
+      }
+
+
+
+
+
+
+
+
+    </style>
+  </head>
+
+  <body>
+    {% load static %}
+
+    <!-- Inline script for mobile navigation functionality -->
+    <script>
+      // Function to toggle side drawer
+      function toggleSideDrawer(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('Toggle side drawer called');
+
+        var sideDrawer = document.getElementById('side-drawer');
+        var overlay = document.getElementById('drawer-overlay');
+
+        if (sideDrawer) {
+          sideDrawer.classList.toggle('active');
+
+          if (overlay) {
+            overlay.classList.toggle('active');
+          }
+
+          // Prevent body scrolling when drawer is open
+          if (sideDrawer.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = '';
+          }
+        }
+      }
+
+      // This script runs immediately when the body loads
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('Mobile menu script loaded');
+        var mobileMenu = document.getElementById('mobile-menu');
+        var mobileDropdown = document.querySelector('.mobile-dropdown');
+
+        console.log('Mobile menu element:', mobileMenu);
+        console.log('Mobile dropdown element:', mobileDropdown);
+
+        if (mobileMenu && mobileDropdown) {
+          // Direct click handler for mobile menu
+          mobileMenu.addEventListener('click', function(e) {
+            console.log('Mobile menu clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.toggle('active');
+
+            // Force display flex with centering
+            mobileDropdown.style.display = 'flex';
+            mobileDropdown.style.justifyContent = 'center';
+            mobileDropdown.style.alignItems = 'center';
+            console.log('Set dropdown display to flex with centering');
+          });
+
+          // Also add click handler to the profile photo inside mobile menu
+          var profilePhoto = mobileMenu.querySelector('.profile-photo');
+          if (profilePhoto) {
+            console.log('Found profile photo element:', profilePhoto);
+            profilePhoto.addEventListener('click', function(e) {
+              console.log('Profile photo clicked');
+              e.preventDefault();
+              e.stopPropagation();
+              mobileMenu.classList.toggle('active');
+
+              // Force display flex with centering
+              mobileDropdown.style.display = 'flex';
+              mobileDropdown.style.justifyContent = 'center';
+              mobileDropdown.style.alignItems = 'center';
+              console.log('Set dropdown display to flex with centering from profile photo click');
+            });
+          }
+
+          // Add click handlers for dropdown items
+          var dropdownItems = mobileDropdown.querySelectorAll('.dropdown-item');
+          dropdownItems.forEach(function(item) {
+            console.log('Found dropdown item:', item);
+            item.addEventListener('click', function(e) {
+              console.log('Dropdown item clicked:', this.href);
+              // Let the link work normally
+            });
+          });
+
+          // Close when clicking outside
+          document.addEventListener('click', function(e) {
+            var menuToggle = document.querySelector('.menu-toggle');
+            var profileToggle = document.querySelector('.profile-toggle');
+            var navLinks = document.getElementById('nav-links');
+            var mobileDropdown = profileToggle.querySelector('.mobile-dropdown');
+
+            // Close mobile dropdown when clicking outside
+            if (profileToggle && !profileToggle.contains(e.target)) {
+              console.log('Clicked outside profile toggle');
+              profileToggle.classList.remove('active');
+              if (mobileDropdown) {
+                mobileDropdown.style.display = 'none';
+              }
+            }
+
+            // Close nav links when clicking outside
+            if (navLinks && menuToggle && !menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+              console.log('Clicked outside nav links');
+              navLinks.classList.remove('active');
+            }
+          });
+        }
+      });
+    </script>
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container">
+      {% if messages %} {% for message in messages %}
+      <div class="toast-notification {{ message.tags }}">
+        <div class="toast-content">
+          <i
+            class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"
+          ></i>
+          <div class="toast-message">{{ message }}</div>
+        </div>
+        <button class="toast-close">&times;</button>
+        <div class="toast-progress"></div>
+      </div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <nav>
+      <ul>
+        <li class="logo">WallpaperHub</li>
+        <li class="theme-toggle-container desktop-only">
+          <label class="switch">
+            <span class="sun">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g fill="#ffd43b">
+                  <circle r="5" cy="12" cx="12"></circle>
+                  <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"></path>
+                </g>
+              </svg>
+            </span>
+            <span class="moon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+              </svg>
+            </span>
+            <input type="checkbox" class="input" id="nav-theme-toggle">
+            <span class="slider"></span>
+          </label>
+        </li>
+        <li class="profile-toggle desktop-only user-profile">
+          <div class="profile-photo">
+            <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+          </div>
+          <div class="user-dropdown">
+            <div class="dropdown-menu">
+              <div class="dropdown-header">{{ user.email }}</div>
+              <div class="dropdown-divider"></div>
+              <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+              <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+          </div>
+        </li>
+        <li class="menu-toggle" onclick="toggleSideDrawer(event);" style="margin-left: auto;">
+          <i class="bi bi-list" style="font-size: 28px;"></i>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+      <div class="drawer-header">
+        <div class="user-info">
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+        <button class="close-drawer" onclick="toggleSideDrawer(event);">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="drawer-divider"></div>
+      <div class="theme-toggle-container" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 500; color: var(--text-color);">Dark Theme</span>
+        <label class="switch">
+          <span class="sun">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g fill="#ffd43b">
+                <circle r="5" cy="12" cx="12"></circle>
+                <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"></path>
+              </g>
+            </svg>
+          </span>
+          <span class="moon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+              <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+            </svg>
+          </span>
+          <input type="checkbox" class="input" id="drawer-theme-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="drawer-divider"></div>
+      <ul class="drawer-links">
+        <li><a href="/" class="drawer-item"><i class="bi bi-house-door"></i> Home</a></li>
+        <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Profile</a></li>
+        <li><a href="/termsOfService.html" class="drawer-item"><i class="bi bi-file-text"></i> Terms of Service</a></li>
+        <li><a href="/privacyPolicy.html" class="drawer-item"><i class="bi bi-shield-check"></i> Privacy Policy</a></li>
+        <li><a href="/aboutUs.html" class="drawer-item"><i class="bi bi-info-circle"></i> About Us</a></li>
+        <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>
+    <div class="search">
+      <form method="GET" id="search-form" style="width: 100%;">
+        <div class="search-container">
+          <div class="search-input-wrapper" style="position: relative; z-index: 9999;">
+            <input
+              type="text"
+              name="query"
+              id="search-input"
+              value="{{ query }}"
+              placeholder="Search for amazing wallpapers..."
+              autocomplete="off"
+              aria-label="Search for wallpapers"
+              title="Press Ctrl+J (or ⌘+J on Mac) to quickly focus this search box"
+            />
+
+          </div>
+          <button type="submit" class="search-button">Search</button>
+        </div>
+        {% if images %}
+        <div class="responsive-spacer"></div>
+        <h2 class="featured-title">Results for "{{ query }}"</h2>
+        <div class="results" id="search-results">
+          {% for image in images %}
+          <div class="wallpaper-item">
+            <a
+              href="{% url 'wallpaper_detail' id=image.id %}"
+              class="wallpaper-link"
+            >
+              <div class="img-loading-wrapper">
+                <div class="loading-placeholder"></div>
+                <img
+                  src="{{ image.urls.small }}"
+                  alt="{{ image.alt_description }}"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://via.placeholder.com/400x600?text=Image+Not+Available'; this.parentNode.querySelector('.loading-placeholder').style.display='none';"
+                />
+              </div>
+              <div class="overlay">
+                <h3>
+                  {{ image.alt_description|default:"Beautiful Wallpaper" }}
+                </h3>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        {% if query %}
+        <div class="no-results">
+          <h2>No results found for "{{ query }}"</h2>
+          <p>
+            Try searching for something else or explore our featured wallpapers
+            below.
+          </p>
+        </div>
+        {% endif %}
+        {% endif %}
+      </form>
+    </div>
+
+    {% if not query %}
+    <div class="responsive-spacer"></div>
+    <h2 class="featured-title">Featured Wallpapers</h2>
+    <main>
+      <div class="box box1">
+        <a href="{% url 'wallpaper_detail' id='Yw6ULQ3K6-g' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://images.unsplash.com/photo-1740188305229-63c68ef04712?q=80&w=2912&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Dog image"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Cute Dog</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box2">
+        <a href="{% url 'wallpaper_detail' id='9ztBqhDNrZ0' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/b8/2d/fc/b82dfcda516f59056576d772346b5396.jpg"
+              alt="Astronaut image"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Astronaut in Space</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box3">
+        <a href="{% url 'wallpaper_detail' id='KMn4VEeEPR8' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/cf/e3/e2/cfe3e2b7975222f0ad8f035e8c2cc5af.jpg"
+              alt="Mahadev image"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Lord Shiva</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box4">
+        <a href="{% url 'wallpaper_detail' id='ckfXPwJmxVE' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/05/03/0d/05030d43391106be726d516fe94c1648.jpg"
+              alt="Ironman image"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Iron Man</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box5">
+        <a href="{% url 'wallpaper_detail' id='Lq6rcifGjOU' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/74/56/29/745629ec9f90d18d4af52367f6ee06f1.jpg"
+              alt="Nature image"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Beautiful Nature</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box6">
+        <a href="{% url 'wallpaper_detail' id='eeTJKC_wz34' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/95/ac/83/95ac83933effedb2bd28c31d0f02e005.jpg"
+              alt="Abstract art"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Abstract Art</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box7">
+        <a href="{% url 'wallpaper_detail' id='pVoEPpLw818' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/49/c1/0d/49c10dfcb9a7652b805d971611bc3441.jpg"
+              alt="Mountain landscape"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>Mountain Landscape</h3>
+          </div>
+        </a>
+      </div>
+      <div class="box box8">
+        <a href="{% url 'wallpaper_detail' id='2QUvkQTBh5s' %}">
+          <div class="img-loading-wrapper">
+            <div class="loading-placeholder"></div>
+            <img
+              src="https://i.pinimg.com/736x/4b/c2/01/4bc2015653ef1639a1d4ed9d373af5b2.jpg"
+              alt="City skyline"
+              loading="lazy"
+            />
+          </div>
+          <div class="overlay">
+            <h3>City Skyline</h3>
+          </div>
+        </a>
+      </div>
+    </main>
+    {% endif %}
+
+    <footer>
+      <a href="/termsOfService.html" style="cursor: pointer !important;">Terms of Service</a>
+      <a href="/privacyPolicy.html" style="cursor: pointer !important;">Privacy Policy</a>
+      <a href="/aboutUs.html" style="cursor: pointer !important;">About Us</a>
+    </footer>
+
+
+    <button id="backToTopButton" class="rounded-1" onclick="scrollToTop()">
+      <i class="fa-solid fa-arrow-up"  style="color: #ffffff"></i>
+    </button>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Toast notification handling
+        const toastContainer = document.getElementById("toast-container");
+        const toasts = document.querySelectorAll(".toast-notification");
+
+        // Function to remove a toast
+        function removeToast(toast) {
+          toast.style.animation = "slideOut 0.5s ease forwards";
+          setTimeout(() => {
+            toast.remove();
+            // If no more toasts, remove the container
+            if (toastContainer.children.length === 0) {
+              toastContainer.remove();
+            }
+          }, 500);
+        }
+
+        // Add click event to close buttons
+        document.querySelectorAll(".toast-close").forEach((closeBtn) => {
+          closeBtn.addEventListener("click", function () {
+            const toast = this.parentElement;
+            removeToast(toast);
+          });
+        });
+
+        // Auto-remove toasts after 5 seconds
+        if (toasts.length > 0) {
+          toasts.forEach((toast) => {
+            setTimeout(() => {
+              if (toast.parentElement) {
+                removeToast(toast);
+              }
+            }, 5000);
+          });
+        }
+
+        // Function to create and show a toast notification
+        function showToast(message, type = 'info') {
+          // Create toast container if it doesn't exist
+          let toastContainer = document.getElementById('toast-container');
+          if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+          }
+
+          // Create toast notification
+          const toast = document.createElement('div');
+          toast.className = `toast-notification ${type}`;
+
+          // Create toast content
+          const toastContent = document.createElement('div');
+          toastContent.className = 'toast-content';
+
+          // Create icon based on type
+          const icon = document.createElement('i');
+          icon.className = 'toast-icon bi';
+          if (type === 'success') {
+            icon.classList.add('bi-check-circle-fill');
+          } else if (type === 'error') {
+            icon.classList.add('bi-exclamation-circle-fill');
+          } else if (type === 'warning') {
+            icon.classList.add('bi-exclamation-triangle-fill');
+          } else {
+            icon.classList.add('bi-info-circle-fill');
+          }
+
+          // Create message
+          const toastMessage = document.createElement('div');
+          toastMessage.className = 'toast-message';
+          toastMessage.textContent = message;
+
+          // Create close button
+          const closeBtn = document.createElement('button');
+          closeBtn.className = 'toast-close';
+          closeBtn.innerHTML = '&times;';
+          closeBtn.addEventListener('click', function() {
+            removeToast(toast);
+          });
+
+          // Create progress bar
+          const progress = document.createElement('div');
+          progress.className = 'toast-progress';
+
+          // Assemble toast
+          toastContent.appendChild(icon);
+          toastContent.appendChild(toastMessage);
+          toast.appendChild(toastContent);
+          toast.appendChild(closeBtn);
+          toast.appendChild(progress);
+
+          // Add to container
+          toastContainer.appendChild(toast);
+
+          // Auto-remove after 5 seconds
+          setTimeout(() => {
+            if (toast.parentElement) {
+              removeToast(toast);
+            }
+          }, 5000);
+
+          return toast;
+        }
+
+        // Check URL parameters for registration success
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('registered') && urlParams.get('registered') === 'success') {
+          showToast('Account created successfully! Welcome to WallpaperHub.', 'success');
+          // Remove the parameter from URL without refreshing the page
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, document.title, newUrl);
+        }
+
+
+
+
+
+        // Close mobile menu when clicking outside
+        document.addEventListener("click", function (event) {
+          const navLinks = document.getElementById('nav-links');
+          const mobileMenu = document.getElementById('mobile-menu');
+          if (
+            navLinks &&
+            mobileMenu &&
+            navLinks.classList.contains("active") &&
+            !navLinks.contains(event.target) &&
+            !mobileMenu.contains(event.target)
+          ) {
+            navLinks.classList.remove("active");
+            mobileMenu.classList.remove("active");
+          }
+        });
+
+        // Search suggestions functionality
+        const searchInput = document.getElementById("search-input");
+        const searchSuggestions = document.getElementById("search-suggestions");
+        const searchForm = document.getElementById("search-form");
+
+        // Popular search suggestions
+        const popularSuggestions = [
+          "Nature",
+          "Abstract",
+          "Animals",
+          "Architecture",
+          "Travel",
+          "Technology",
+          "Food",
+          "Fashion",
+          "Art",
+          "Space",
+          "Minimalist",
+          "Dark",
+          "Neon",
+          "Vintage",
+          "Cyberpunk",
+          "Beach",
+          "Mountains",
+          "City",
+          "Forest",
+          "Ocean",
+          "Sunset",
+          "Flowers",
+          "Cars",
+          "Sports",
+          "Gaming",
+          "Anime",
+          "Movies",
+          "Music",
+          "Quotes",
+          "Patterns",
+        ];
+
+        // Category-based suggestions
+        const categorySuggestions = {
+          nature: [
+            "Mountains",
+            "Beach",
+            "Forest",
+            "Ocean",
+            "Sunset",
+            "Flowers",
+            "Landscape",
+            "Wildlife",
+          ],
+          abstract: [
+            "Geometric",
+            "Colorful",
+            "Minimalist",
+            "Patterns",
+            "Fractal",
+            "Digital Art",
+          ],
+          dark: [
+            "Black",
+            "Gothic",
+            "Night",
+            "Space",
+            "Minimal Dark",
+            "Cyberpunk",
+          ],
+          technology: [
+            "Computers",
+            "Coding",
+            "Futuristic",
+            "Gadgets",
+            "Cyberpunk",
+            "AI",
+          ],
+          anime: [
+            "Naruto",
+            "One Piece",
+            "Dragon Ball",
+            "Attack on Titan",
+            "My Hero Academia",
+          ],
+          gaming: [
+            "Minecraft",
+            "Fortnite",
+            "Call of Duty",
+            "GTA",
+            "Valorant",
+            "League of Legends",
+          ],
+          movies: [
+            "Marvel",
+            "Star Wars",
+            "Harry Potter",
+            "Lord of the Rings",
+            "DC Comics",
+          ],
+          cars: [
+            "Sports Cars",
+            "Luxury Cars",
+            "Vintage Cars",
+            "Supercars",
+            "Racing",
+          ],
+          space: ["Galaxy", "Stars", "Planets", "Nebula", "Astronaut", "NASA"],
+        };
+
+        // Function to show suggestions based on input
+        function showSuggestions(input) {
+          console.log('showSuggestions called with input:', input);
+
+          // Clear previous suggestions
+          searchSuggestions.innerHTML = "";
+
+          if (!input || input.trim() === '') {
+            console.log('Showing popular suggestions');
+            // If input is empty, show popular suggestions
+            const randomSuggestions = getRandomItems(popularSuggestions, 8);
+            randomSuggestions.forEach((suggestion) => {
+              addSuggestion(suggestion);
+            });
+          } else {
+            // Check if input matches any category
+            const lowerInput = input.toLowerCase();
+            let matchedCategory = null;
+
+            for (const category in categorySuggestions) {
+              if (
+                category.includes(lowerInput) ||
+                lowerInput.includes(category)
+              ) {
+                matchedCategory = category;
+                break;
+              }
+            }
+
+            if (matchedCategory) {
+              console.log('Matched category:', matchedCategory);
+              // Show category-specific suggestions
+              categorySuggestions[matchedCategory].forEach((suggestion) => {
+                addSuggestion(suggestion);
+              });
+            } else {
+              console.log('Filtering suggestions for:', lowerInput);
+              // Filter suggestions based on input
+              const filteredSuggestions = popularSuggestions.filter(
+                (suggestion) => suggestion.toLowerCase().includes(lowerInput)
+              );
+
+              console.log('Filtered suggestions:', filteredSuggestions);
+              // Add filtered suggestions
+              filteredSuggestions.slice(0, 8).forEach((suggestion) => {
+                addSuggestion(suggestion);
+              });
+
+              // Add the exact input as a suggestion if no matches
+              if (filteredSuggestions.length === 0) {
+                addSuggestion(`Search for "${input}"`);
+              }
+            }
+          }
+
+          // Show suggestions container if there are suggestions
+          if (searchSuggestions.children.length > 0) {
+            console.log('Showing suggestions container with', searchSuggestions.children.length, 'items');
+            searchSuggestions.classList.add("active");
+          } else {
+            console.log('No suggestions to show');
+            searchSuggestions.classList.remove("active");
+          }
+        }
+
+        // Function to add a suggestion to the suggestions container
+        function addSuggestion(text) {
+          const suggestionItem = document.createElement("div");
+          suggestionItem.className = "suggestion-item";
+          suggestionItem.textContent = text;
+
+          suggestionItem.addEventListener("click", function () {
+            // If the suggestion starts with 'Search for', extract the query
+            if (text.startsWith('Search for "')) {
+              searchInput.value = text.substring(12, text.length - 1);
+            } else {
+              searchInput.value = text;
+            }
+            searchForm.submit();
+          });
+
+          searchSuggestions.appendChild(suggestionItem);
+        }
+
+        // Helper function to get random items from an array
+        function getRandomItems(array, count) {
+          const shuffled = [...array].sort(() => 0.5 - Math.random());
+          return shuffled.slice(0, count);
+        }
+
+        // Event listeners for search input
+        if (searchInput) {
+          console.log("Search input found:", searchInput);
+
+          // Show suggestions when input is focused
+          searchInput.addEventListener("focus", function () {
+            console.log("Focus event triggered");
+            showSuggestions(this.value);
+          });
+
+          // Update suggestions as user types
+          searchInput.addEventListener("input", function () {
+            console.log("Input event triggered with value:", this.value);
+            showSuggestions(this.value);
+          });
+
+          // Trigger suggestions immediately if the page loads with a query
+          if (searchInput.value) {
+            console.log("Initial value detected:", searchInput.value);
+            showSuggestions(searchInput.value);
+          } else {
+            // Show popular suggestions on page load
+            setTimeout(() => {
+              showSuggestions("");
+            }, 500);
+          }
+
+          // Handle keyboard navigation
+          searchInput.addEventListener("keydown", function (e) {
+            const suggestions = document.querySelectorAll(".suggestion-item");
+            const selectedIndex = Array.from(suggestions).findIndex((item) =>
+              item.classList.contains("selected")
+            );
+
+            switch (e.key) {
+              case "ArrowDown":
+                e.preventDefault();
+                if (selectedIndex < suggestions.length - 1) {
+                  if (selectedIndex >= 0) {
+                    suggestions[selectedIndex].classList.remove("selected");
+                  }
+                  suggestions[selectedIndex + 1].classList.add("selected");
+                }
+                break;
+              case "ArrowUp":
+                e.preventDefault();
+                if (selectedIndex > 0) {
+                  suggestions[selectedIndex].classList.remove("selected");
+                  suggestions[selectedIndex - 1].classList.add("selected");
+                }
+                break;
+              case "Enter":
+                if (selectedIndex >= 0) {
+                  e.preventDefault();
+                  suggestions[selectedIndex].click();
+                }
+                break;
+              case "Escape":
+                searchSuggestions.classList.remove("active");
+                break;
+            }
+          });
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener("click", function (event) {
+          if (
+            searchInput &&
+            !searchInput.contains(event.target) &&
+            !searchSuggestions.contains(event.target)
+          ) {
+            searchSuggestions.classList.remove("active");
+          }
+        });
+
+        // Handle initial image loading
+        document.querySelectorAll(".img-loading-wrapper img").forEach((img) => {
+          // Always set transition for smooth appearance
+          img.style.transition = "opacity 0.3s ease";
+
+          if (img.complete) {
+            // Image is already loaded (from cache)
+            img.style.opacity = "1";
+            img.classList.add('loaded');
+            const placeholder = img.previousElementSibling;
+            if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+              placeholder.style.opacity = "0";
+              placeholder.style.visibility = "hidden";
+            }
+          } else {
+            // Set up load event for images still loading
+            img.style.opacity = "0";
+            img.onload = function () {
+              this.style.opacity = "1";
+              this.classList.add('loaded');
+              const placeholder = this.previousElementSibling;
+              if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                placeholder.style.opacity = "0";
+                placeholder.style.visibility = "hidden";
+              }
+            };
+
+            // Handle error cases
+            img.onerror = function() {
+              const placeholder = this.previousElementSibling;
+              if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                placeholder.style.opacity = "0";
+                placeholder.style.visibility = "hidden";
+              }
+              // Show a fallback image
+              this.src = 'https://via.placeholder.com/400x600?text=Image+Not+Available';
+              this.style.opacity = "1";
+              this.classList.add('loaded');
+            };
+
+            // Failsafe: If image takes too long to load, force it to be visible
+            setTimeout(() => {
+              if (img.style.opacity === "0") {
+                console.log('Image taking too long to load, forcing visibility:', img.src);
+                img.style.opacity = "1";
+                img.classList.add('loaded');
+                const placeholder = img.previousElementSibling;
+                if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                  placeholder.style.opacity = "0";
+                  placeholder.style.visibility = "hidden";
+                }
+              }
+            }, 5000); // 5 second timeout for image loading
+          }
+        });
+
+        // Check for any images that might be stuck in loading state
+        // This helps with page refreshes where the state might be inconsistent
+        setTimeout(() => {
+          document.querySelectorAll(".img-loading-wrapper img:not(.loaded)").forEach((img) => {
+            console.log('Found image not properly loaded after page load, fixing:', img.src);
+            img.style.opacity = "1";
+            img.classList.add('loaded');
+            const placeholder = img.previousElementSibling;
+            if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+              placeholder.style.opacity = "0";
+              placeholder.style.visibility = "hidden";
+            }
+          });
+        }, 2000); // Check 2 seconds after page load
+
+
+      });
+    </script>
+
+    <!-- Back to Top Button Script -->
+    <script>
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+      window.addEventListener("scroll", function () {
+        let button = document.getElementById("backToTopButton");
+        if (button) {
+          if (window.scrollY > 100) {
+            // Show button after 100px scroll
+            button.classList.add("show");
+          } else {
+            button.classList.remove("show");
+          }
+        }
+      });
+    </script>
+
+
+
+
+
+
+
+    <!-- Footer Links Fix Script -->
+    <script>
+      // Direct navigation function for links - defined globally
+      function navigateTo(url) {
+        window.location.href = url;
+        return false;
+      }
+
+      // Make sure the function is available in the global scope
+      window.navigateTo = navigateTo;
+
+      document.addEventListener("DOMContentLoaded", function() {
+        // Fix all links with javascript:void(0) href
+        const allLinks = document.querySelectorAll("a[href='javascript:void(0);']");
+        allLinks.forEach(link => {
+          link.addEventListener("click", function(e) {
+            // Get the URL from the onclick attribute
+            const onclickAttr = this.getAttribute("onclick");
+            if (onclickAttr && onclickAttr.includes("window.location.href")) {
+              const url = onclickAttr.split("'")[1];
+              if (url) {
+                e.preventDefault();
+                window.location.href = url;
+              }
+            }
+          });
+        });
+      });
+    </script>
+
+    <!-- User Profile Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // User profile dropdown
+        const userProfiles = document.querySelectorAll(".user-profile");
+
+        userProfiles.forEach(userProfile => {
+          const userDropdown = userProfile.querySelector(".user-dropdown");
+
+          if (userProfile && userDropdown) {
+            userProfile.addEventListener("click", function(e) {
+              e.stopPropagation();
+              if (userDropdown.style.visibility === "visible") {
+                userDropdown.style.opacity = "0";
+                userDropdown.style.visibility = "hidden";
+                userDropdown.style.transform = "translateY(10px)";
+              } else {
+                userDropdown.style.opacity = "1";
+                userDropdown.style.visibility = "visible";
+                userDropdown.style.transform = "translateY(5px)";
+              }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", function(e) {
+              if (!userProfile.contains(e.target)) {
+                userDropdown.style.opacity = "0";
+                userDropdown.style.visibility = "hidden";
+                userDropdown.style.transform = "translateY(10px)";
+              }
+            });
+          }
+        });
+
+        // Handle image loading and create masonry layout
+        const images = document.querySelectorAll('.img-loading-wrapper img');
+
+        // Function to enhance masonry layout
+        function createMasonryLayout() {
+          // CSS column-based masonry layout is already applied
+          // This function now just ensures all images are properly loaded and visible
+          const grids = [document.querySelector('main'), document.querySelector('.results')];
+
+          grids.forEach(grid => {
+            if (!grid) return;
+
+            // Make sure all items are visible
+            const items = grid.children;
+            Array.from(items).forEach(item => {
+              // Ensure all items have proper margin and display
+              item.style.marginBottom = '15px';
+              item.style.breakInside = 'avoid';
+              item.style.display = 'inline-block';
+
+              // Make sure images maintain their natural aspect ratio
+              const img = item.querySelector('img');
+              if (img) {
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.display = 'block';
+
+                // Force image to be visible if it's loaded
+                if (img.complete) {
+                  img.style.opacity = '1';
+                  img.classList.add('loaded');
+
+                  // Hide the loading placeholder
+                  const placeholder = img.previousElementSibling;
+                  if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                    placeholder.style.opacity = "0";
+                    placeholder.style.visibility = "hidden";
+                  }
+                }
+              }
+            });
+          });
+        }
+
+        // Function to initialize masonry layout after images load
+        function initMasonry() {
+          // Wait for all images to load
+          const allImagesLoaded = Array.from(document.querySelectorAll('.img-loading-wrapper img')).every(img => img.complete);
+
+          if (allImagesLoaded) {
+            createMasonryLayout();
+          } else {
+            // If not all images are loaded, wait a bit and try again
+            setTimeout(initMasonry, 100);
+          }
+        }
+
+        // Function to ensure images remain visible after page refresh
+        function ensureImagesVisible() {
+          document.querySelectorAll('.img-loading-wrapper img').forEach(img => {
+            // Force image to be visible if it's loaded
+            if (img.complete) {
+              img.style.opacity = '1';
+              img.classList.add('loaded');
+
+              // Hide the loading placeholder
+              const placeholder = img.previousElementSibling;
+              if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                placeholder.style.opacity = "0";
+                placeholder.style.visibility = "hidden";
+              }
+            }
+          });
+        }
+
+        // Call this function on page load and periodically
+        ensureImagesVisible();
+        setInterval(ensureImagesVisible, 1000); // Check every second
+
+        images.forEach(img => {
+          // If image is already loaded from cache
+          if (img.complete) {
+            img.classList.add('loaded');
+
+            // Hide the loading placeholder
+            const placeholder = img.previousElementSibling;
+            if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+              placeholder.style.opacity = "0";
+              placeholder.style.visibility = "hidden";
+            }
+          } else {
+            // Add loaded class when image loads
+            img.addEventListener('load', function() {
+              this.classList.add('loaded');
+              this.style.opacity = '1';
+
+              // Hide the loading placeholder
+              const placeholder = this.previousElementSibling;
+              if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+                placeholder.style.opacity = "0";
+                placeholder.style.visibility = "hidden";
+              }
+
+              // Try to initialize masonry layout after each image loads
+              initMasonry();
+            });
+          }
+
+          // Handle error cases
+          img.addEventListener('error', function() {
+            // Hide the loading placeholder on error
+            const placeholder = this.previousElementSibling;
+            if (placeholder && placeholder.classList.contains("loading-placeholder")) {
+              placeholder.style.opacity = "0";
+              placeholder.style.visibility = "hidden";
+            }
+
+            // Show a broken image placeholder
+            this.src = 'https://via.placeholder.com/400x600?text=Image+Not+Available';
+            this.style.opacity = '1';
+
+            // Try to initialize masonry layout after handling error
+            initMasonry();
+          });
+        });
+
+        // Apply masonry layout on window resize
+        window.addEventListener('resize', createMasonryLayout);
+
+        // Initial layout after images load
+        window.addEventListener('load', function() {
+          initMasonry();
+          ensureImagesVisible();
+        });
+
+        // Also try to initialize masonry layout immediately
+        initMasonry();
+      });
+    </script>
+
+    <!-- Simple Mobile Menu Script -->
+    <script>
+      // This script is intentionally left empty as the mobile menu functionality
+      // is now handled by the script at the top of the body
+      // This prevents any conflicts between multiple scripts
+    </script>
+
+    <!-- Custom Back to Top button is used instead of scroll-to-top -->
+
+    <!-- Page Loader Script -->
+    <script src="{% static 'js/page-loader.js' %}"></script>
+
+    <!-- Smooth Scrolling Script -->
+    <script src="{% static 'js/smooth-scroll.js' %}" defer></script>
+
+    <!-- Search Shortcut Script (⌘ +J) -->
+    <script src="{% static 'js/search-shortcut.js' %}" defer></script>
+
+    <!-- Theme Toggle Script -->
+    <script src="{% static 'js/sun-moon-toggle.js' %}"></script>
+
+    <!-- Fix cursor styles script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fix cursor for footer links
+        document.querySelectorAll('footer a').forEach(function(link) {
+          link.style.cursor = 'pointer';
+        });
+
+
+
+        // Fix cursor for all buttons and links
+        document.querySelectorAll('a, button, .btn, [role="button"], [type="button"], [type="submit"], [type="reset"]').forEach(function(element) {
+          element.style.cursor = 'pointer';
+        });
+      });
+    </script>
+
+
+
+
+
+
+    <!-- Include Cookie Consent Banner -->
+    {% include 'cookie_consent_include.html' %}
+
+    <!-- Fix for category links -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fix for category links in footer
+        const categoryLinks = document.querySelectorAll('.footer-section a');
+        categoryLinks.forEach(link => {
+          link.style.cursor = 'pointer';
+
+          // Add click event listener to ensure links work
+          link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href) {
+              window.location.href = href;
+            }
+          });
+        });
+      });
+    </script>
+
+    <script>
+      // Define navLinks and mobileMenu before using them
+      const navLinks = document.getElementById('nav-links');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      document.addEventListener("click", function (event) {
+        if (
+          navLinks && mobileMenu &&
+          navLinks.classList.contains("active") &&
+          !navLinks.contains(event.target) &&
+          !mobileMenu.contains(event.target)
+        ) {
+          navLinks.classList.remove("active");
+          mobileMenu.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,833 @@
+/**
+ * Sun/Moon Theme Toggle for WallpaperHub
+ * Based on design by andrew-demchenk0 from Uiverse.io
+ */
+
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 34px;
+  margin-left: 10px;
+  z-index: 1;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #73C0FC;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  left: 2px;
+  bottom: 2px;
+  z-index: 2;
+  background-color: #e8e8e8;
+  transition: .4s;
+}
+
+.sun svg {
+  position: absolute;
+  top: 6px;
+  left: 36px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+}
+
+.moon svg {
+  fill: #73C0FC;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+}
+
+.sun svg {
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.moon svg {
+  animation: tilt 5s linear infinite;
+}
+
+@keyframes tilt {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.input:checked + .slider {
+  background-color: #183153;
+}
+
+.input:focus + .slider {
+  box-shadow: 0 0 1px #183153;
+}
+
+.input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* Dark theme specific styles */
+[data-theme="dark"] {
+  /* Main colors */
+  --bg-color: #0E121B;
+  --text-color: #E0E0E0;
+  --card-bg: #161B27;
+  --card-shadow: rgba(0, 0, 0, 0.4);
+  --navbar-bg: rgba(14, 18, 27, 0.95);
+  --border-color: #1E2433;
+  --hero-overlay: rgba(14, 18, 27, 0.8);
+  --footer-bg: #0A0E16;
+  --footer-text: #A0AEC0;
+
+  /* Override profile page variables */
+  --primary: #8A7DCE;
+  --primary-dark: #6A5EAE;
+  --secondary: #0E121B;
+  --dark: #E0E0E0;
+  --light: #161B27;
+  --gray: #1E2433;
+}
+
+/* Ensure text visibility in dark mode */
+[data-theme="dark"] p,
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] span,
+[data-theme="dark"] a,
+[data-theme="dark"] label,
+[data-theme="dark"] button {
+  color: var(--text-color);
+}
+
+/* Dark mode button styling for better visibility */
+[data-theme="dark"] .edit-profile-btn,
+[data-theme="dark"] .empty-state-btn,
+[data-theme="dark"] .upload-btn,
+[data-theme="dark"] .btn-primary {
+  background-color: #8A7DCE !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .edit-profile-btn:hover,
+[data-theme="dark"] .empty-state-btn:hover,
+[data-theme="dark"] .upload-btn:hover,
+[data-theme="dark"] .btn-primary:hover {
+  background-color: #6A5EAE !important;
+  color: #000000 !important;
+}
+
+/* Secondary buttons in dark mode */
+[data-theme="dark"] .btn-secondary {
+  background-color: #2D3748 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: #4A5568 !important;
+  color: #FFFFFF !important;
+}
+
+/* General button styling for dark mode */
+[data-theme="dark"] .btn {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .btn:not(.btn-primary):not(.btn-secondary):not(.edit-profile-btn):not(.empty-state-btn):not(.upload-btn) {
+  background-color: #2D3748 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .btn:not(.btn-primary):not(.btn-secondary):not(.edit-profile-btn):not(.empty-state-btn):not(.upload-btn):hover {
+  background-color: #4A5568 !important;
+  color: #FFFFFF !important;
+}
+
+/* Ensure button text is always visible in dark mode */
+[data-theme="dark"] .btn,
+[data-theme="dark"] .btn *,
+[data-theme="dark"] .edit-profile-btn,
+[data-theme="dark"] .edit-profile-btn *,
+[data-theme="dark"] .empty-state-btn,
+[data-theme="dark"] .empty-state-btn *,
+[data-theme="dark"] .upload-btn,
+[data-theme="dark"] .upload-btn * {
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+/* Specific text color overrides for dark mode buttons */
+[data-theme="dark"] .edit-profile-btn,
+[data-theme="dark"] .empty-state-btn,
+[data-theme="dark"] .upload-btn,
+[data-theme="dark"] .btn-primary {
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+[data-theme="dark"] .edit-profile-btn:hover,
+[data-theme="dark"] .empty-state-btn:hover,
+[data-theme="dark"] .upload-btn:hover,
+[data-theme="dark"] .btn-primary:hover {
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+/* Also handle body.dark-theme class for compatibility */
+body.dark-theme .edit-profile-btn,
+body.dark-theme .empty-state-btn,
+body.dark-theme .upload-btn,
+body.dark-theme .btn-primary {
+  background-color: #8A7DCE !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+body.dark-theme .edit-profile-btn:hover,
+body.dark-theme .empty-state-btn:hover,
+body.dark-theme .upload-btn:hover,
+body.dark-theme .btn-primary:hover {
+  background-color: #6A5EAE !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+/* Global Responsive Hamburger Menu Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--dark, #333333);
+  margin: 3px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 320px;
+  height: 100vh;
+  background-color: var(--light, #FFFFFF);
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: 0;
+}
+
+.mobile-nav.active {
+  right: 0;
+}
+
+/* Mobile Nav Header */
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 2px solid var(--gray, #F5F5F5);
+  background: linear-gradient(135deg, var(--primary, #65558F), var(--primary-dark, #534979));
+}
+
+.mobile-nav-logo {
+  color: white !important;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+.mobile-nav-logo:hover {
+  color: white !important;
+  text-decoration: none !important;
+}
+
+.mobile-nav-logo:visited {
+  color: white !important;
+}
+
+.mobile-nav-logo:active {
+  color: white !important;
+}
+
+.mobile-nav-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+/* Mobile Nav Content */
+.mobile-nav-content {
+  padding: 30px 25px;
+}
+
+.mobile-nav-section {
+  margin-bottom: 30px;
+}
+
+.mobile-nav-section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary, #65558F);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  padding-left: 5px;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: var(--dark, #333333);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.mobile-nav-item:hover {
+  background-color: var(--primary, #65558F);
+  color: white;
+  transform: translateX(5px);
+}
+
+.mobile-nav-item i {
+  margin-right: 15px;
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* Mobile Theme Toggle Section */
+.mobile-theme-section {
+  margin-top: 40px;
+  padding-top: 25px;
+  border-top: 2px solid var(--gray, #F5F5F5);
+}
+
+.mobile-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background-color: var(--gray, #F5F5F5);
+  border-radius: 10px;
+}
+
+.mobile-theme-label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: var(--dark, #333333);
+}
+
+.mobile-theme-label i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.mobile-theme-toggle .switch {
+  margin: 0;
+  transform: scale(0.8);
+}
+
+/* Overlay */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Dark theme for hamburger menu */
+[data-theme="dark"] .hamburger span,
+body.dark-theme .hamburger span {
+  background-color: #E0E0E0;
+}
+
+[data-theme="dark"] .mobile-nav,
+body.dark-theme .mobile-nav {
+  background-color: #161B27;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .mobile-nav-header,
+body.dark-theme .mobile-nav-header {
+  border-bottom: 2px solid #2D3748;
+  background: linear-gradient(135deg, #8A7DCE, #6A5EAE);
+}
+
+[data-theme="dark"] .mobile-nav-section-title,
+body.dark-theme .mobile-nav-section-title {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .mobile-nav-item,
+body.dark-theme .mobile-nav-item {
+  color: #E0E0E0;
+}
+
+[data-theme="dark"] .mobile-nav-item:hover,
+body.dark-theme .mobile-nav-item:hover {
+  background-color: #8A7DCE;
+  color: #000000;
+}
+
+[data-theme="dark"] .mobile-theme-section,
+body.dark-theme .mobile-theme-section {
+  border-top: 2px solid #2D3748;
+}
+
+[data-theme="dark"] .mobile-theme-toggle,
+body.dark-theme .mobile-theme-toggle {
+  background-color: #2D3748;
+}
+
+[data-theme="dark"] .mobile-theme-label,
+body.dark-theme .mobile-theme-label {
+  color: #E0E0E0;
+}
+
+/* Ensure mobile nav logo is always white in all themes */
+[data-theme="dark"] .mobile-nav-logo,
+body.dark-theme .mobile-nav-logo {
+  color: white !important;
+}
+
+[data-theme="dark"] .mobile-nav-logo:hover,
+body.dark-theme .mobile-nav-logo:hover {
+  color: white !important;
+}
+
+[data-theme="dark"] .mobile-nav-logo:visited,
+body.dark-theme .mobile-nav-logo:visited {
+  color: white !important;
+}
+
+[data-theme="dark"] .mobile-nav-logo:active,
+body.dark-theme .mobile-nav-logo:active {
+  color: white !important;
+}
+
+/* Global Button Icon Alignment */
+.btn i,
+.edit-profile-btn i,
+.empty-state-btn i,
+.upload-btn i,
+button i {
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+  transition: transform 0.3s ease !important;
+}
+
+.btn span,
+.edit-profile-btn span,
+.empty-state-btn span,
+.upload-btn span,
+button span {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Button Container Alignment */
+.btn,
+.edit-profile-btn,
+.empty-state-btn,
+.upload-btn,
+button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  line-height: 1.2 !important;
+  vertical-align: middle !important;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none !important;
+  }
+
+  .hamburger {
+    display: flex !important;
+  }
+
+  .mobile-nav {
+    display: block !important;
+  }
+
+  /* Mobile button adjustments */
+  .btn,
+  .edit-profile-btn,
+  .empty-state-btn,
+  .upload-btn {
+    gap: 12px !important;
+    padding: 15px 25px !important;
+    font-size: 1.1rem !important;
+  }
+
+  .btn i,
+  .edit-profile-btn i,
+  .empty-state-btn i,
+  .upload-btn i {
+    font-size: 1.1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-nav {
+    width: 100% !important;
+  }
+
+  /* Small mobile button adjustments */
+  .btn,
+  .edit-profile-btn,
+  .empty-state-btn,
+  .upload-btn {
+    gap: 10px !important;
+    padding: 12px 20px !important;
+    font-size: 1rem !important;
+  }
+
+  .btn i,
+  .edit-profile-btn i,
+  .empty-state-btn i,
+  .upload-btn i {
+    font-size: 1rem !important;
+  }
+}
+
+/* Ensure links are visible but distinct */
+[data-theme="dark"] a {
+  color: #6D9CFF;
+}
+
+[data-theme="dark"] a:hover {
+  color: #8FB5FF;
+}
+
+/* Navbar styles for dark theme */
+[data-theme="dark"] .navbar {
+  background-color: var(--navbar-bg);
+}
+
+[data-theme="dark"] .navbar-brand {
+  color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .nav-link {
+  color: rgba(224, 224, 224, 0.85) !important;
+}
+
+[data-theme="dark"] .nav-link:hover {
+  color: white !important;
+}
+
+/* Card styles for dark theme */
+[data-theme="dark"] .card {
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 15px var(--card-shadow);
+}
+
+/* Form controls for dark theme */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select,
+[data-theme="dark"] .form-control {
+  background-color: #161B27;
+  color: #E0E0E0;
+  border-color: #1E2433;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] .form-control:focus {
+  background-color: #1E2433;
+  color: #E0E0E0;
+  border-color: #4D78CC;
+}
+
+/* Profile page specific dark theme styles */
+[data-theme="dark"] body,
+body.dark-theme {
+  background-color: #0E121B;
+  color: #E0E0E0;
+}
+
+[data-theme="dark"] header,
+body.dark-theme header {
+  background-color: #161B27;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .nav-link,
+body.dark-theme .nav-link {
+  color: #E0E0E0;
+}
+
+[data-theme="dark"] .nav-link:hover,
+body.dark-theme .nav-link:hover {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .profile-header,
+[data-theme="dark"] .upload-form,
+[data-theme="dark"] .empty-state,
+body.dark-theme .profile-header,
+body.dark-theme .upload-form,
+body.dark-theme .empty-state {
+  background-color: #161B27;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .profile-info h1,
+body.dark-theme .profile-info h1 {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .profile-info p,
+[data-theme="dark"] .stat-label,
+body.dark-theme .profile-info p,
+body.dark-theme .stat-label {
+  color: #A0AEC0;
+}
+
+[data-theme="dark"] .stat-count,
+body.dark-theme .stat-count {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .tab,
+body.dark-theme .tab {
+  color: #A0AEC0;
+}
+
+[data-theme="dark"] .tab.active,
+[data-theme="dark"] .tab:hover,
+body.dark-theme .tab.active,
+body.dark-theme .tab:hover {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .tab.active::after,
+body.dark-theme .tab.active::after {
+  background-color: #8A7DCE;
+}
+
+[data-theme="dark"] .wallpaper-item,
+body.dark-theme .wallpaper-item {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .wallpaper-item:hover,
+body.dark-theme .wallpaper-item:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .loading-placeholder,
+body.dark-theme .loading-placeholder {
+  background: linear-gradient(90deg, #161B27 0%, #1E2433 50%, #161B27 100%);
+}
+
+[data-theme="dark"] .file-upload-label,
+body.dark-theme .file-upload-label {
+  border-color: #1E2433;
+}
+
+[data-theme="dark"] .file-upload-label:hover,
+body.dark-theme .file-upload-label:hover {
+  border-color: #8A7DCE;
+  background-color: rgba(138, 125, 206, 0.1);
+}
+
+[data-theme="dark"] .file-upload-label i,
+body.dark-theme .file-upload-label i {
+  color: #8A7DCE;
+}
+
+[data-theme="dark"] .empty-state i,
+body.dark-theme .empty-state i {
+  color: #1E2433;
+}
+
+[data-theme="dark"] .empty-state h3,
+body.dark-theme .empty-state h3 {
+  color: #A0AEC0;
+}
+
+[data-theme="dark"] .empty-state p,
+body.dark-theme .empty-state p {
+  color: #718096;
+}
+
+[data-theme="dark"] .toast-notification,
+body.dark-theme .toast-notification {
+  background-color: #161B27;
+  color: #E0E0E0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Footer styles for dark theme */
+[data-theme="dark"] footer {
+  background-color: var(--footer-bg);
+}
+
+[data-theme="dark"] footer p {
+  color: var(--footer-text);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .switch {
+    font-size: 15px;
+    width: 56px;
+    height: 30px;
+  }
+
+  .slider:before {
+    height: 26px;
+    width: 26px;
+  }
+
+  .sun svg, .moon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sun svg {
+    left: 32px;
+  }
+
+  .input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+}
+
+/* Theme toggle container styles */
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+/* For navbar placement */
+.navbar .theme-toggle-container {
+  margin-left: 10px;
+}
+
+/* For mobile menu placement */
+.side-drawer .theme-toggle-container {
+  padding: 10px 20px;
+  justify-content: space-between;
+}
+
+.side-drawer .theme-toggle-container span {
+  font-weight: 500;
+}

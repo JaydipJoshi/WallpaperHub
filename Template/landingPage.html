@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>WallpaperHub - Premium Wallpapers for Every Device</title>
+
+    <!-- Easter Egg Loader CSS - Load this first for immediate display -->
+    <link rel="stylesheet" href="{% static 'css/easter-egg-loader.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <!-- Critical CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Theme Styles -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/smooth-scroll.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sun-moon-toggle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cursor-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/back-to-top.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+      /* Custom styles for landing page */
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .navbar {
+        transition: all 0.3s ease;
+      }
+      .navbar-nav{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0px;
+      }
+      .navbar-scrolled {
+        box-shadow: 0 5px 15px var(--card-shadow);
+        background-color: var(--navbar-bg) !important;
+      }
+
+      .navbar-brand {
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .navbar-toggler {
+        border: none;
+        padding: 0;
+        outline: none !important;
+        box-shadow: none !important;
+        font-size: 1.5rem;
+        color: var(--primary);
+      }
+
+      .navbar-toggler i {
+        font-size: 28px;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        color: var(--dark);
+        margin: 0 10px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover, .btn-primary:focus {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .btn-outline-primary {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .btn-outline-light:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .hero-section {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-bg {
+        z-index: 0;
+      }
+
+      .hero-section .container {
+        z-index: 1;
+      }
+
+      .min-vh-75 {
+        min-height: 75vh;
+      }
+
+      .rounded-4 {
+        border-radius: 1rem;
+      }
+
+      .rounded-5 {
+        border-radius: 2rem;
+      }
+
+      /* Toast Notification Styles */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+
+      .toast-notification {
+        display: flex;
+        flex-direction: column;
+        min-width: 300px;
+        max-width: 400px;
+        background-color: white;
+        color: #333;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        animation: slideIn 0.5s ease forwards;
+        position: relative;
+      }
+
+      .toast-notification.success {
+        border-left: 5px solid #4CAF50;
+      }
+
+      .toast-notification.error {
+        border-left: 5px solid #F44336;
+      }
+
+      .toast-notification.warning {
+        border-left: 5px solid #FF9800;
+      }
+
+      .toast-notification.info {
+        border-left: 5px solid #2196F3;
+      }
+
+      .toast-content {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+      }
+
+      .toast-icon {
+        font-size: 24px;
+        margin-right: 15px;
+      }
+
+      .toast-notification.success .toast-icon {
+        color: #4CAF50;
+      }
+
+      .toast-notification.error .toast-icon {
+        color: #F44336;
+      }
+
+      .toast-notification.warning .toast-icon {
+        color: #FF9800;
+      }
+
+      .toast-notification.info .toast-icon {
+        color: #2196F3;
+      }
+
+      .toast-message {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .toast-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #999;
+      }
+
+      .toast-progress {
+        height: 4px;
+        background-color: rgba(0, 0, 0, 0.1);
+        width: 100%;
+      }
+
+      .toast-progress::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        width: 100%;
+        background-color: currentColor;
+        animation: progress 5s linear forwards;
+      }
+
+      .toast-notification.success .toast-progress::before {
+        background-color: #4CAF50;
+      }
+
+      .toast-notification.error .toast-progress::before {
+        background-color: #F44336;
+      }
+
+      .toast-notification.warning .toast-progress::before {
+        background-color: #FF9800;
+      }
+
+      .toast-notification.info .toast-progress::before {
+        background-color: #2196F3;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes progress {
+        from { width: 100%; }
+        to { width: 0%; }
+      }
+
+      /* Side drawer styling */
+      .side-drawer {
+        position: fixed;
+        top: 0;
+        right: -300px; /* Start off-screen */
+        width: 280px;
+        height: 100vh;
+        background-color: var(--card-bg);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+      }
+
+      @media (max-width: 768px) {
+        .side-drawer {
+          width: 250px;
+        }
+
+        /* Hide the Bootstrap navbar collapse on mobile */
+        .navbar-collapse {
+          display: none !important;
+        }
+
+        /* Always show the navbar toggler on mobile */
+        .navbar-toggler {
+          display: block;
+        }
+      }
+
+      .side-drawer.active {
+        right: 0; /* Slide in */
+      }
+
+      .drawer-header {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .drawer-brand {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+
+      .close-drawer {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--text-color);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .drawer-divider {
+        height: 1px;
+        background-color: var(--border-color);
+        margin: 0 20px;
+      }
+
+      .drawer-links {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+      }
+
+      .drawer-links li {
+        margin: 5px 0;
+      }
+
+      .drawer-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+
+      .drawer-item i {
+        margin-right: 15px;
+        font-size: 1.1rem;
+        color: var(--primary);
+      }
+
+      .drawer-item:hover, .drawer-item:focus {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: var(--primary);
+      }
+
+      .drawer-item.login-btn {
+        background-color: var(--primary);
+        color: white;
+        margin: 15px 20px;
+        border-radius: 50px;
+        padding: 12px 20px;
+      }
+
+      .drawer-item.login-btn i {
+        color: white;
+      }
+
+      .drawer-item.login-btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      .drawer-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1999;
+        display: none;
+      }
+
+      .drawer-overlay.active {
+        display: block;
+      }
+
+      /* Marquee Styles */
+      .marquee-container {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        padding: 25px 0;
+        background: transparent;
+      }
+
+      .marquee-wrapper {
+        display: flex;
+        width: fit-content;
+        animation: marquee 60s linear infinite;
+      }
+
+      .marquee-wrapper:hover {
+        animation-play-state: paused;
+      }
+
+      .marquee-content {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .marquee-item {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 20px;
+        width: 180px;
+        height: 180px;
+        background-color: transparent;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        text-decoration: none;
+      }
+
+      .marquee-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: transform 0.5s ease;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .marquee-item span {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent);
+        padding: 25px 10px 10px;
+        text-align: center;
+        z-index: 1;
+        font-weight: 700;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      }
+
+      .marquee-item:hover {
+        transform: translateY(-5px);
+      }
+
+      .marquee-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .marquee-item:hover span {
+        padding-bottom: 15px;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
+      }
+
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* Video Section Styles */
+      .video-container {
+        position: relative;
+        background: #000;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Remove all interactive elements for autoplay video */
+      .video-container video {
+        cursor: default;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+
+      /* Enhanced video info overlay for autoplay */
+      .video-info {
+        z-index: 5;
+        background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        transition: opacity 0.3s ease;
+      }
+
+      /* Responsive video sizing */
+      @media (min-width: 1200px) {
+        .video-container {
+          border-radius: 2rem;
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      /* Floating Animation */
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+
+      .floating-element {
+        opacity: 0.6;
+        animation-duration: 6s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+
+      /* Feature Icons Animation */
+      .feature-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .feature-icon:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon .bg-white {
+        transition: all 0.3s ease;
+      }
+
+      .feature-icon:hover .bg-white {
+        background-color: var(--primary) !important;
+        transform: scale(1.1);
+      }
+
+      .feature-icon:hover .bg-white i {
+        color: white !important;
+      }
+
+      /* Video responsive adjustments */
+      @media (max-width: 768px) {
+        .video-container {
+          border-radius: 1rem;
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating-element {
+          display: none; /* Hide floating elements on mobile for better performance */
+        }
+
+        /* Adjust video aspect ratio for mobile */
+        .ratio-21x9 {
+          --bs-aspect-ratio: 56.25%; /* 16:9 on mobile for better fit */
+        }
+
+        /* Hide main text overlay on mobile, keep only badges */
+        .video-info .col-md-8 {
+          display: none !important;
+        }
+
+        .video-info .col-md-4 {
+          width: 100% !important;
+          max-width: 100% !important;
+          text-align: center !important;
+        }
+
+        .video-info {
+          padding: 1rem !important;
+          background: linear-gradient(transparent, rgba(0,0,0,0.6)) !important;
+        }
+
+        .video-info .d-flex {
+          justify-content: center !important;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .video-container {
+          border-radius: 0.75rem;
+          margin: 0 -15px; /* Extend to screen edges on very small screens */
+        }
+
+        /* Enhanced mobile styling for very small screens */
+        .video-info {
+          padding: 0.75rem !important;
+        }
+
+        .video-info .badge {
+          font-size: 0.8rem !important;
+          padding: 0.5rem 1rem !important;
+          margin: 0 0.25rem !important;
+          font-weight: 600 !important;
+          border-radius: 1rem !important;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Ensure badges are visible and well-positioned */
+        .video-info .d-flex {
+          gap: 0.5rem !important;
+        }
+      }
+
+      /* Tablet portrait mode adjustments */
+      @media (min-width: 577px) and (max-width: 768px) {
+        .video-info .badge {
+          font-size: 0.9rem !important;
+          padding: 0.6rem 1.2rem !important;
+          font-weight: 600 !important;
+          border-radius: 1rem !important;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .video-info {
+          padding: 1.25rem !important;
+        }
+
+        .video-info .badge {
+          animation: badgePulse 3s ease-in-out infinite;
+        }
+
+        .video-info .badge:nth-child(2) {
+          animation-delay: 0.5s;
+        }
+      }
+
+      /* Badge pulse animation for mobile */
+      @keyframes badgePulse {
+        0%, 100% {
+          transform: scale(1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+      }
+
+      /* Video loading state */
+      .video-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        z-index: 15;
+      }
+
+      .video-loading .spinner-border {
+        width: 3rem;
+        height: 3rem;
+      }
+
+      /* Video fallback with animated background */
+      .video-fallback {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+        border-radius: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .video-fallback::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shimmer 3s infinite;
+        z-index: 1;
+      }
+
+      .video-fallback > * {
+        position: relative;
+        z-index: 2;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+      }
+
+      /* Enhanced video container for better loading */
+      .video-container video {
+        background-color: #000;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23000"/><circle cx="50" cy="50" r="20" fill="none" stroke="%23fff" stroke-width="2" opacity="0.3"/><polygon points="45,40 45,60 65,50" fill="%23fff" opacity="0.5"/></svg>');
+        background-size: 100px 100px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      /* Footer email input placeholder styling - Default (Dark Mode) */
+      footer .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        opacity: 1;
+      }
+
+      footer .form-control::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      footer .form-control::-moz-placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        opacity: 1;
+      }
+
+      footer .form-control:-ms-input-placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      footer .form-control:-moz-placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+        opacity: 1;
+      }
+
+      /* Enhanced footer input styling for dark mode */
+      footer .form-control {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
+      }
+
+      footer .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25) !important;
+        color: white !important;
+      }
+
+      footer .form-control:focus::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+      }
+
+      /* Footer email input placeholder styling for Light Mode */
+      [data-theme="light"] footer .form-control::placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+        opacity: 1;
+      }
+
+      [data-theme="light"] footer .form-control::-webkit-input-placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+      }
+
+      [data-theme="light"] footer .form-control::-moz-placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+        opacity: 1;
+      }
+
+      [data-theme="light"] footer .form-control:-ms-input-placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+      }
+
+      [data-theme="light"] footer .form-control:-moz-placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+        opacity: 1;
+      }
+
+      /* Enhanced footer input styling for light mode */
+      [data-theme="light"] footer .form-control {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid rgba(0, 0, 0, 0.15) !important;
+        color: #333 !important;
+      }
+
+      [data-theme="light"] footer .form-control:focus {
+        background-color: rgba(0, 0, 0, 0.08) !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25) !important;
+        color: #333 !important;
+      }
+
+      [data-theme="light"] footer .form-control:focus::placeholder {
+        color: rgba(0, 0, 0, 0.4) !important;
+      }
+
+      /* Alternative approach using body class for theme detection */
+      body.light-theme footer .form-control::placeholder,
+      body.light-theme footer .form-control::-webkit-input-placeholder,
+      body.light-theme footer .form-control::-moz-placeholder,
+      body.light-theme footer .form-control:-ms-input-placeholder,
+      body.light-theme footer .form-control:-moz-placeholder {
+        color: rgba(0, 0, 0, 0.6) !important;
+        opacity: 1;
+      }
+
+      body.light-theme footer .form-control {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid rgba(0, 0, 0, 0.15) !important;
+        color: #333 !important;
+      }
+
+      body.light-theme footer .form-control:focus {
+        background-color: rgba(0, 0, 0, 0.08) !important;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25) !important;
+        color: #333 !important;
+      }
+
+      body.light-theme footer .form-control:focus::placeholder {
+        color: rgba(0, 0, 0, 0.4) !important;
+      }
+
+      /* CSS Custom Properties approach for more reliable theme detection */
+      footer .form-control {
+        --placeholder-color: rgba(255, 255, 255, 0.7);
+        --input-bg: rgba(255, 255, 255, 0.1);
+        --input-border: rgba(255, 255, 255, 0.2);
+        --input-text: white;
+      }
+
+      /* Override for light theme using CSS variables */
+      :root[data-theme="light"] footer .form-control,
+      body.light-theme footer .form-control {
+        --placeholder-color: rgba(0, 0, 0, 0.6);
+        --input-bg: rgba(0, 0, 0, 0.05);
+        --input-border: rgba(0, 0, 0, 0.15);
+        --input-text: #333;
+      }
+
+      /* Newsletter Form Styles */
+      .newsletter-form {
+        position: relative;
+      }
+
+      .newsletter-input {
+        transition: all 0.3s ease;
+        border-radius: 0.5rem 0 0 0.5rem !important;
+      }
+
+      .newsletter-input:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15) !important;
+      }
+
+      .newsletter-btn {
+        border-radius: 0 0.5rem 0.5rem 0 !important;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        min-width: 120px;
+      }
+
+      .newsletter-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+      }
+
+      .newsletter-btn:active {
+        transform: translateY(0);
+      }
+
+      .newsletter-btn.loading {
+        pointer-events: none;
+      }
+
+      .newsletter-message {
+        margin-top: 10px;
+        padding: 10px 15px;
+        border-radius: 0.5rem;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        animation: slideDown 0.3s ease;
+      }
+
+      .newsletter-message.success {
+        background-color: rgba(40, 167, 69, 0.1);
+        border: 1px solid rgba(40, 167, 69, 0.3);
+        color: #28a745;
+      }
+
+      .newsletter-message.error {
+        background-color: rgba(220, 53, 69, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        color: #dc3545;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Newsletter loading animation */
+      .newsletter-loading {
+        backdrop-filter: blur(2px);
+        border-radius: 0.5rem;
+      }
+
+      /* Responsive newsletter form */
+      @media (max-width: 768px) {
+        .newsletter-btn {
+          min-width: 100px;
+          font-size: 14px;
+        }
+
+        .newsletter-input {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% load static %}
+
+
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="toast-notification {{ message.tags }}">
+            <div class="toast-content">
+              <i class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+              <div class="toast-message">{{ message }}</div>
+            </div>
+            <button class="toast-close">&times;</button>
+            <div class="toast-progress"></div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+          <span>WallpaperHub</span>
+        </a>
+        <button class="navbar-toggler" type="button" onclick="toggleSideDrawer(event);">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#gallery">Gallery</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/aboutUs.html">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/userHome">Explore</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/termsOfService.html">Terms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/privacyPolicy.html">Privacy</a>
+            </li>
+            <li class="nav-item">
+              <div class="theme-toggle-container">
+                <label class="switch">
+                  <span class="sun">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <g fill="#ffd43b">
+                        <circle r="5" cy="12" cx="12"></circle>
+                        <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"></path>
+                      </g>
+                    </svg>
+                  </span>
+                  <span class="moon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                      <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+                    </svg>
+                  </span>
+                  <input type="checkbox" class="input" id="nav-theme-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item ms-lg-3 user-profile">
+              <div class="profile-photo">
+                <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+              </div>
+              <div class="user-dropdown">
+                <div class="dropdown-header">{{ user.email }}</div>
+                <div class="dropdown-divider"></div>
+                <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+                <a href="{% url 'user_home' %}" class="dropdown-item"><i class="bi bi-grid"></i> User Home</a>
+                <div class="dropdown-divider"></div>
+                <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+              </div>
+            </li>
+            {% else %}
+            <li class="nav-item ms-lg-3">
+              <a class="btn btn-primary rounded-pill px-4 text-white" href="/loginpage">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+      <div class="drawer-header">
+        <div class="drawer-brand">
+          <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+          <span>WallpaperHub</span>
+        </div>
+        <button class="close-drawer" onclick="toggleSideDrawer(event);">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="drawer-divider"></div>
+      <div class="theme-toggle-container" style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 500; color: var(--text-color);">Dark Theme</span>
+        <label class="switch">
+          <span class="sun">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g fill="#ffd43b">
+                <circle r="5" cy="12" cx="12"></circle>
+                <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"></path>
+              </g>
+            </svg>
+          </span>
+          <span class="moon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+              <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+            </svg>
+          </span>
+          <input type="checkbox" class="input" id="drawer-theme-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="drawer-divider"></div>
+      <ul class="drawer-links">
+        <li><a href="#features" class="drawer-item"><i class="bi bi-stars"></i> Features</a></li>
+        <li><a href="#gallery" class="drawer-item"><i class="bi bi-images"></i> Gallery</a></li>
+        <li><a href="javascript:void(0);" class="drawer-item drawer-link" data-url="/aboutUs.html"><i class="bi bi-info-circle"></i> About Us</a></li>
+        <li><a href="javascript:void(0);" class="drawer-item drawer-link" data-url="/userHome/"><i class="bi bi-compass"></i> Explore</a></li>
+        <li><a href="javascript:void(0);" class="drawer-item drawer-link" data-url="/termsOfService.html"><i class="bi bi-file-text"></i> Terms</a></li>
+        <li><a href="javascript:void(0);" class="drawer-item drawer-link" data-url="/privacyPolicy.html"><i class="bi bi-shield-check"></i> Privacy</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Account</a></li>
+        <li><a href="{% url 'user_home' %}" class="drawer-item"><i class="bi bi-grid"></i> User Home</a></li>
+        <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+        {% else %}
+        <li><a href="/loginpage" class="drawer-item login-btn"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section position-relative overflow-hidden bg-dark text-white">
+      <!-- Background with overlay -->
+      <div class="hero-bg position-absolute w-100 h-100" style="background: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat; opacity: 0.7;"></div>
+
+      <div class="container position-relative py-5">
+        <div class="row min-vh-75 align-items-center py-5">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInUp">Discover Stunning Wallpapers</h1>
+            <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">Elevate your screens with our curated collection of high-quality wallpapers for every device and style preference.</p>
+            <div class="d-flex flex-wrap gap-2 animate__animated animate__fadeInUp animate__delay-2s">
+              <a href="/signUpPage" class="btn btn-primary btn-lg text-white px-4 py-2 rounded-pill">Get Started</a>
+              <a href="/loginpage" class="btn btn-outline-light btn-lg text-#0E121B px-4 py-2 rounded-pill">Sign In</a>
+            </div>
+          </div>
+          <div class="col-lg-6 d-none d-lg-block animate__animated animate__fadeInRight">
+            <div class="hero-image-container position-relative">
+              <!-- Device mockup with wallpaper -->
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop" class="img-fluid rounded-4 shadow-lg" alt="Wallpaper showcase" loading="lazy">
+              <!-- Floating elements for visual interest -->
+              <div class="position-absolute top-0 end-0 translate-middle-y bg-primary rounded-circle p-3 shadow-lg animate__animated animate__pulse animate__infinite">
+                <i class="bi bi-image fs-4 text-white"></i>
+              </div>
+              <div class="position-absolute bottom-0 start-0 translate-middle bg-white rounded-4 p-3 shadow-lg">
+                <span class="badge bg-success me-2">HD</span>
+                <span class="badge bg-info">4K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wave divider -->
+        <div class="position-absolute bottom-0 start-0 w-100">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-100" preserveAspectRatio="none" style="height: 60px;">
+            <path fill="var(--bg-color)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promotional Video Section -->
+    <section class="py-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <div class="container py-5">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="fw-bold mb-3 text-white">Experience WallpaperHub</h2>
+            <p class="text-white-50 lead">Watch how easy it is to discover, save, and share stunning wallpapers with WallpaperHub</p>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="video-container position-relative rounded-4 overflow-hidden shadow-lg">
+              <!-- Autoplay Background Video -->
+              <div class="ratio ratio-21x9">
+                <video
+                  id="promoVideo"
+                  class="w-100 h-100"
+                  poster="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3"
+                  preload="auto"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  disablepictureinpicture
+                  style="object-fit: cover; pointer-events: none;"
+                >
+                  <!-- Multiple video sources for better compatibility -->
+                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                  <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4">
+                  <source src="https://file-examples.com/storage/fe68c8a7c66afe9b2b8c154/2017/10/file_example_MP4_480_1_5MG.mp4" type="video/mp4">
+
+                  <!-- Fallback for browsers that don't support video -->
+                  <div class="video-fallback text-center p-5">
+                    <i class="bi bi-play-circle fs-1 text-white mb-3"></i>
+                    <h5 class="text-white">Video Preview</h5>
+                    <p class="text-white-50">Experience WallpaperHub's amazing features</p>
+                    <a href="/signUpPage" class="btn btn-primary mt-3">Get Started</a>
+                  </div>
+                </video>
+              </div>
+
+              <!-- Video Info Overlay -->
+              <div class="video-info position-absolute bottom-0 start-0 w-100 p-4 bg-gradient" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <h5 class="text-white mb-2 fw-bold">WallpaperHub - Your Ultimate Wallpaper Destination</h5>
+                    <p class="text-white-50 mb-0 small">Discover thousands of stunning wallpapers, save your favorites, and share with friends</p>
+                  </div>
+                  <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div class="d-flex justify-content-md-end gap-2">
+                      <span class="badge bg-primary px-3 py-2">HD Quality</span>
+                      <span class="badge bg-success px-3 py-2">Free</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Video Features -->
+            <div class="row mt-5 g-4">
+              <div class="col-md-4 text-center">
+                <div class="feature-icon mb-3">
+                  <div class="bg-white rounded-circle p-3 d-inline-flex align-items-center justify-content-center shadow-sm">
+                    <i class="bi bi-search text-primary fs-4"></i>
+                  </div>
+                </div>
+                <h6 class="text-white fw-bold">Explore Wallpapers</h6>
+                <p class="text-white-50 small">Browse through thousands of high-quality wallpapers across multiple categories</p>
+              </div>
+              <div class="col-md-4 text-center">
+                <div class="feature-icon mb-3">
+                  <div class="bg-white rounded-circle p-3 d-inline-flex align-items-center justify-content-center shadow-sm">
+                    <i class="bi bi-heart text-primary fs-4"></i>
+                  </div>
+                </div>
+                <h6 class="text-white fw-bold">Save & Organize</h6>
+                <p class="text-white-50 small">Save your favorite wallpapers and organize them in personalized collections</p>
+              </div>
+              <div class="col-md-4 text-center">
+                <div class="feature-icon mb-3">
+                  <div class="bg-white rounded-circle p-3 d-inline-flex align-items-center justify-content-center shadow-sm">
+                    <i class="bi bi-share text-primary fs-4"></i>
+                  </div>
+                </div>
+                <h6 class="text-white fw-bold">Share & Download</h6>
+                <p class="text-white-50 small">Share wallpapers with friends and download them in multiple resolutions</p>
+              </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-5">
+              <a href="/signUpPage" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold me-3 mb-3 mb-md-0">
+                <i class="bi bi-rocket-takeoff me-2"></i>Get Started Now
+              </a>
+              <a href="/userHome" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold">
+                <i class="bi bi-eye me-2"></i>Explore Gallery
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated Background Elements -->
+      <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="z-index: -1;">
+        <div class="floating-element position-absolute" style="top: 10%; left: 10%; animation: float 6s ease-in-out infinite;">
+          <i class="bi bi-image text-white-50 fs-1"></i>
+        </div>
+        <div class="floating-element position-absolute" style="top: 20%; right: 15%; animation: float 8s ease-in-out infinite reverse;">
+          <i class="bi bi-palette text-white-50 fs-2"></i>
+        </div>
+        <div class="floating-element position-absolute" style="bottom: 20%; left: 20%; animation: float 7s ease-in-out infinite;">
+          <i class="bi bi-download text-white-50 fs-3"></i>
+        </div>
+        <div class="floating-element position-absolute" style="bottom: 30%; right: 10%; animation: float 9s ease-in-out infinite reverse;">
+          <i class="bi bi-heart text-white-50 fs-2"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Marquee Section -->
+    <section class="py-5 bg-white" style="border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+      <div class="container text-center mb-4">
+        <h2 class="fw-bold">Explore Categories</h2>
+        <p class="text-muted">Discover wallpapers in your favorite categories</p>
+      </div>
+      <div class="container-fluid px-0">
+        <div class="marquee-container">
+          <div class="marquee-wrapper">
+            <div class="marquee-content">
+              <a href="{% url 'category_preview' category='abstract' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=500&auto=format&fit=crop&q=60" alt="Abstract" loading="lazy">
+                <span>Abstract</span>
+              </a>
+              <a href="{% url 'category_preview' category='nature' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=60" alt="Nature" loading="lazy">
+                <span>Nature</span>
+              </a>
+              <a href="{% url 'category_preview' category='city' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" alt="City" loading="lazy">
+                <span>City</span>
+              </a>
+              <a href="{% url 'category_preview' category='space' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=500&auto=format&fit=crop&q=60" alt="Space" loading="lazy">
+                <span>Space</span>
+              </a>
+              <a href="{% url 'category_preview' category='minimal' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=500&auto=format&fit=crop&q=60" alt="Minimal" loading="lazy">
+                <span>Minimal</span>
+              </a>
+              <a href="{% url 'category_preview' category='neon' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=60" alt="Neon" loading="lazy">
+                <span>Neon</span>
+              </a>
+              <a href="{% url 'category_preview' category='landscape' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500&auto=format&fit=crop&q=60" alt="Landscape" loading="lazy">
+                <span>Landscape</span>
+              </a>
+              <a href="{% url 'category_preview' category='sunset' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?w=500&auto=format&fit=crop&q=60" alt="Sunset" loading="lazy">
+                <span>Sunset</span>
+              </a>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="marquee-content">
+              <a href="{% url 'category_preview' category='abstract' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=500&auto=format&fit=crop&q=60" alt="Abstract">
+                <span>Abstract</span>
+              </a>
+              <a href="{% url 'category_preview' category='nature' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=60" alt="Nature">
+                <span>Nature</span>
+              </a>
+              <a href="{% url 'category_preview' category='city' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" alt="City">
+                <span>City</span>
+              </a>
+              <a href="{% url 'category_preview' category='space' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=500&auto=format&fit=crop&q=60" alt="Space">
+                <span>Space</span>
+              </a>
+              <a href="{% url 'category_preview' category='minimal' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1449247709967-d4461a6a6103?w=500&auto=format&fit=crop&q=60" alt="Minimal">
+                <span>Minimal</span>
+              </a>
+              <a href="{% url 'category_preview' category='neon' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=60" alt="Neon">
+                <span>Neon</span>
+              </a>
+              <a href="{% url 'category_preview' category='landscape' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500&auto=format&fit=crop&q=60" alt="Landscape">
+                <span>Landscape</span>
+              </a>
+              <a href="{% url 'category_preview' category='sunset' %}" class="marquee-item">
+                <img src="https://images.unsplash.com/photo-1495344517868-8ebaf0a2044a?w=500&auto=format&fit=crop&q=60" alt="Sunset">
+                <span>Sunset</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5" id="features">
+      <div class="container py-5">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="fw-bold mb-3">Why Choose WallpaperHub?</h2>
+            <p class="text-muted lead">Discover the perfect wallpaper for every device and occasion with our premium features.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <!-- Feature 1 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card border-0 h-100 shadow-sm text-center p-4 animate__animated animate__fadeInUp">
+              <div class="text-primary mb-3">
+                <i class="bi bi-hd fs-1"></i>
+              </div>
+              <h5 class="card-title">HD Quality</h5>
+              <p class="card-text text-muted">Enjoy crystal clear wallpapers optimized for all screen resolutions.</p>
+            </div>
+          </div>
+          <!-- Feature 2 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card border-0 h-100 shadow-sm text-center p-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+              <div class="text-primary mb-3">
+                <i class="bi bi-collection fs-1"></i>
+              </div>
+              <h5 class="card-title">Huge Collection</h5>
+              <p class="card-text text-muted">Access thousands of wallpapers across multiple categories and styles.</p>
+            </div>
+          </div>
+          <!-- Feature 3 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card border-0 h-100 shadow-sm text-center p-4 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+              <div class="text-primary mb-3">
+                <i class="bi bi-cloud-download fs-1"></i>
+              </div>
+              <h5 class="card-title">Easy Download</h5>
+              <p class="card-text text-muted">Download wallpapers with a single click for all your devices.</p>
+            </div>
+          </div>
+          <!-- Feature 4 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card border-0 h-100 shadow-sm text-center p-4 animate__animated animate__fadeInUp" style="animation-delay: 0.6s">
+              <div class="text-primary mb-3">
+                <i class="bi bi-arrow-repeat fs-1"></i>
+              </div>
+              <h5 class="card-title">Regular Updates</h5>
+              <p class="card-text text-muted">New wallpapers added daily to keep your screens fresh and exciting.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-5 bg-light" id="gallery">
+      <div class="container py-5">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="fw-bold mb-3 text-black">Explore Our Collection</h2>
+            <p class="text-black lead">Browse through our handpicked selection of stunning wallpapers for every mood and style.</p>
+          </div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="row g-3">
+          <!-- Gallery Item 1 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070" class="card-img-top" alt="Abstract Wallpaper" loading="lazy">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Abstract</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 2 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.1s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964" class="card-img-top" alt="Nature Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Nature</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 3 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.2s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1511300636408-a63a89df3482?q=80&w=2070" class="card-img-top" alt="City Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">City</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 4 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.3s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071" class="card-img-top" alt="Space Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Space</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 5 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.4s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2070" class="card-img-top" alt="Minimal Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Minimal</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 6 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.5s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2106" class="card-img-top" alt="Neon Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Neon</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 7 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.6s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070" class="card-img-top" alt="Landscape Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Landscape</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gallery Item 8 -->
+          <div class="col-6 col-md-4 col-lg-3 animate__animated animate__fadeIn" style="animation-delay: 0.7s">
+            <div class="card border-0 overflow-hidden shadow-sm h-100">
+              <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=2070" class="card-img-top" alt="Sunset Wallpaper">
+              <div class="card-img-overlay d-flex align-items-end">
+                <div class="w-100 text-white p-2 bg-dark bg-opacity-50">
+                  <h6 class="card-title mb-0">Sunset</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- View More Button -->
+        <div class="text-center mt-5">
+          <a href="/userHome" class="btn btn-outline-primary rounded-pill px-4 py-2">Explore More Wallpapers</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-5" id="about">
+      <div class="container py-5">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <img src="https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?q=80&w=2101" alt="About WallpaperHub" class="img-fluid rounded-4 shadow-lg" loading="lazy">
+          </div>
+          <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">About WallpaperHub</h2>
+            <p class="lead mb-4">WallpaperHub is your ultimate destination for high-quality wallpapers that transform your digital experience.</p>
+            <p class="text-muted mb-4">Our mission is to provide a curated collection of stunning wallpapers for every device, mood, and style preference. We believe that personalization is key to making technology feel more human, and wallpapers are the perfect way to express your unique style.</p>
+            <p class="text-muted mb-4">With thousands of options across multiple categories, regular updates, and easy downloads, we're committed to helping you keep your screens fresh and inspiring.</p>
+            <div class="d-flex gap-3 mt-4">
+              <div class="d-flex align-items-center">
+                <div class="text-primary me-2"><i class="bi bi-check-circle-fill"></i></div>
+                <span>Free HD Wallpapers</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="text-primary me-2"><i class="bi bi-check-circle-fill"></i></div>
+                <span>Daily Updates</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="text-primary me-2"><i class="bi bi-check-circle-fill"></i></div>
+                <span>Multiple Categories</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 text-white" style="background-color: var(--primary);">
+      <div class="container py-5 text-center">
+        <h2 class="fw-bold mb-4">Ready to Transform Your Screens?</h2>
+        <p class="lead mb-5">Join thousands of users who have already discovered the perfect wallpapers for their devices.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="/signUpPage" class="btn btn-light btn-lg px-4 py-2 text-black rounded-pill">Sign Up Now</a>
+          <a href="/userHome" class="btn btn-outline-light btn-lg px-4 py-2 text-black rounded-pill">Browse Wallpapers</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5" style="background-color: var(--footer-bg); color: var(--text-color);">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <a class="d-flex align-items-center text-decoration-none mb-3 footer-logo" href="/">
+              <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3 bg-white p-1">
+              <span class="fs-4 fw-bold">WallpaperHub</span>
+            </a>
+            <p class="text-muted">Your ultimate destination for high-quality wallpapers that transform your digital experience.</p>
+            <div class="d-flex gap-3 mt-3">
+              <a href="#" class="social-icon"><i class="bi bi-facebook fs-4"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-twitter fs-4"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-instagram fs-4"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-pinterest fs-4"></i></a>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-2">
+            <h5 class="mb-4">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Home</a></li>
+              <li class="mb-2"><a href="#features" class="text-muted text-decoration-none">Features</a></li>
+              <li class="mb-2"><a href="#gallery" class="text-muted text-decoration-none">Gallery</a></li>
+              <li class="mb-2"><a href="#about" class="text-muted text-decoration-none">About</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-2">
+            <h5 class="mb-4">Categories</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2"><a href="{% url 'categories' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">All Categories</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='nature' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Nature</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='abstract' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Abstract</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='minimal' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Minimal</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='space' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Space</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='city' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">City</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='neon' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Neon</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='landscape' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Landscape</a></li>
+              <li class="mb-2"><a href="{% url 'category_preview' category='sunset' %}" class="text-muted text-decoration-none" style="cursor: pointer !important;">Sunset</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-lg-4">
+            <h5 class="mb-4">Stay Updated</h5>
+            <p class="text-muted mb-4">Subscribe to our newsletter for the latest wallpapers and updates.</p>
+            <form id="newsletter-form" class="newsletter-form">
+              {% csrf_token %}
+              <div class="input-group mb-3 position-relative">
+                <input
+                  type="email"
+                  id="newsletter-email"
+                  class="form-control newsletter-input"
+                  placeholder="Your email address"
+                  aria-label="Your email address"
+                  required
+                >
+                <button
+                  class="btn btn-primary newsletter-btn"
+                  type="submit"
+                  id="newsletter-submit-btn"
+                >
+                  <span class="btn-text">Subscribe</span>
+                  <span class="btn-loading d-none">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Subscribing...
+                  </span>
+                </button>
+
+                <!-- Loading overlay -->
+                <div class="newsletter-loading d-none position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 rounded">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Success/Error Messages -->
+              <div id="newsletter-message" class="newsletter-message d-none"></div>
+            </form>
+          </div>
+        </div>
+        <hr class="my-4" style="background-color: var(--border-color);">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="text-muted mb-0">© 2025 WallpaperHub. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item"><a href="javascript:void(0);" class="text-muted text-decoration-none footer-link" data-url="/privacyPolicy.html">Privacy Policy</a></li>
+              <li class="list-inline-item"><span class="text-muted">·</span></li>
+              <li class="list-inline-item"><a href="javascript:void(0);" class="text-muted text-decoration-none footer-link" data-url="/termsOfService.html">Terms of Service</a></li>
+              <li class="list-inline-item"><span class="text-muted">·</span></li>
+              <li class="list-inline-item"><a href="javascript:void(0);" class="text-muted text-decoration-none footer-link" data-url="/aboutUs.html">About Us</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme Toggle Script -->
+    <script src="{% static 'js/sun-moon-toggle.js' %}"></script>
+
+    <!-- Custom JavaScript for Navbar Scroll Effect and Toast Notifications -->
+    <!-- Inline script for mobile navigation functionality -->
+    <script>
+      // Function to toggle side drawer
+      function toggleSideDrawer(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var sideDrawer = document.getElementById('side-drawer');
+        var overlay = document.getElementById('drawer-overlay');
+        var backToTop = document.getElementById('back-to-top');
+
+        if (sideDrawer) {
+          sideDrawer.classList.toggle('active');
+
+          if (overlay) {
+            overlay.classList.toggle('active');
+          }
+
+          // Prevent body scrolling when drawer is open
+          if (sideDrawer.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+            // Hide back-to-top button when drawer is open
+            if (backToTop) {
+              backToTop.style.display = 'none';
+            }
+          } else {
+            document.body.style.overflow = '';
+            // Show back-to-top button when drawer is closed (if we're scrolled down)
+            if (backToTop && (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300)) {
+              backToTop.style.display = '';
+              backToTop.classList.add('active');
+            }
+          }
+        }
+      }
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+          } else {
+            navbar.classList.remove('navbar-scrolled');
+          }
+        });
+
+        // Toast notification handling
+        const toastContainer = document.getElementById('toast-container');
+        const toasts = document.querySelectorAll('.toast-notification');
+
+        // Function to remove a toast
+        function removeToast(toast) {
+          toast.style.animation = 'slideOut 0.5s ease forwards';
+          setTimeout(() => {
+            toast.remove();
+            // If no more toasts, remove the container
+            if (toastContainer && toastContainer.children.length === 0) {
+              toastContainer.remove();
+            }
+          }, 500);
+        }
+
+        // Add click event to close buttons
+        document.querySelectorAll('.toast-close').forEach(closeBtn => {
+          closeBtn.addEventListener('click', function() {
+            const toast = this.parentElement;
+            removeToast(toast);
+          });
+        });
+
+        // Auto-remove toasts after 5 seconds
+        if (toasts.length > 0) {
+          toasts.forEach(toast => {
+            setTimeout(() => {
+              if (toast.parentElement) {
+                removeToast(toast);
+              }
+            }, 5000);
+          });
+        }
+
+        // Handle all drawer links
+        document.querySelectorAll('.drawer-item').forEach(link => {
+          link.addEventListener('click', function(e) {
+            // Get the href attribute
+            const href = this.getAttribute('href');
+
+            // Close the drawer
+            var sideDrawer = document.getElementById('side-drawer');
+            var overlay = document.getElementById('drawer-overlay');
+            var backToTop = document.getElementById('back-to-top');
+
+            if (sideDrawer) {
+              sideDrawer.classList.remove('active');
+
+              if (overlay) {
+                overlay.classList.remove('active');
+              }
+
+              // Restore body scrolling
+              document.body.style.overflow = '';
+
+              // Show back-to-top button if we're scrolled down
+              if (backToTop && (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300)) {
+                backToTop.style.display = '';
+                backToTop.classList.add('active');
+              }
+            }
+
+            // If it's an anchor link, handle smooth scrolling
+            if (href && href.startsWith('#')) {
+              e.preventDefault();
+              // Smooth scroll to the section after a small delay to allow the drawer to close
+              setTimeout(() => {
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                  targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 300);
+            }
+            // If it's a regular link, let it navigate normally
+          });
+        });
+      });
+    </script>
+
+    <!-- Back to Top Button -->
+    <a href="#" id="back-to-top" class="back-to-top d-flex align-items-center justify-content-center">
+      <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <!-- Back to Top Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Get the button
+        let backToTopButton = document.getElementById("back-to-top");
+
+        // Initially hide the button
+        if (backToTopButton) {
+          backToTopButton.classList.remove("active");
+        }
+
+        // Function to scroll to top
+        function topFunction() {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
+          // Hide the button immediately when clicked
+          if (backToTopButton) {
+            backToTopButton.classList.remove("active");
+          }
+        }
+
+        // When the user scrolls, check position and show/hide the button
+        window.onscroll = function() {
+          // Don't show button if side drawer is open
+          var sideDrawer = document.getElementById('side-drawer');
+          if (sideDrawer && sideDrawer.classList.contains('active')) {
+            return;
+          }
+
+          // Show button only when scrolled down
+          if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            backToTopButton.classList.add("active");
+          } else {
+            backToTopButton.classList.remove("active");
+          }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        backToTopButton.onclick = function(e) {
+          e.preventDefault();
+          topFunction();
+          return false;
+        };
+
+        // Initial check on page load
+        if (document.body.scrollTop <= 300 && document.documentElement.scrollTop <= 300) {
+          backToTopButton.classList.remove("active");
+        }
+      });
+    </script>
+
+    <!-- Page Loader Script -->
+    <script src="{% static 'js/page-loader.js' %}"></script>
+
+    <!-- Smooth Scrolling Script -->
+    <script src="{% static 'js/smooth-scroll.js' %}" defer></script>
+
+    <!-- User Profile Script -->
+    <script src="{% static 'js/user-profile.js' %}" defer></script>
+
+    <!-- Include Cookie Consent Banner -->
+    {% include 'cookie_consent_include.html' %}
+
+    <!-- Footer and Mobile links fix script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fix for footer links in desktop mode
+        const footerLinks = document.querySelectorAll('.footer-link');
+        footerLinks.forEach(link => {
+          link.style.cursor = 'pointer';
+
+          // Add click event listener
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('data-url');
+            if (url) {
+              window.location.href = url;
+            }
+          });
+        });
+
+        // Fix for drawer links in mobile view
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+        drawerLinks.forEach(link => {
+          link.style.cursor = 'pointer';
+
+          // Add multiple event listeners to ensure links work on all devices
+          ['click', 'touchend'].forEach(eventType => {
+            link.addEventListener(eventType, function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              const url = this.getAttribute('data-url');
+              if (url) {
+                // Close drawer if it's open
+                var sideDrawer = document.getElementById('side-drawer');
+                var backToTop = document.getElementById('back-to-top');
+
+                if (sideDrawer && sideDrawer.classList.contains('active')) {
+                  sideDrawer.classList.remove('active');
+                  var overlay = document.getElementById('drawer-overlay');
+                  if (overlay) {
+                    overlay.classList.remove('active');
+                  }
+                  document.body.style.overflow = '';
+
+                  // Show back-to-top button if we're scrolled down
+                  if (backToTop && (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300)) {
+                    backToTop.style.display = '';
+                    backToTop.classList.add('active');
+                  }
+                }
+
+                // Navigate to the URL
+                setTimeout(function() {
+                  window.location.href = url;
+                }, 100);
+              }
+              return false;
+            });
+          });
+        });
+      });
+    </script>
+
+    <!-- Autoplay Video Script -->
+    <script>
+      // Autoplay video functionality - no user interaction required
+      function initializeAutoplayVideo() {
+        const video = document.getElementById('promoVideo');
+
+        if (video) {
+          // Ensure video is properly configured for autoplay
+          video.muted = true;
+          video.loop = true;
+          video.autoplay = true;
+          video.playsInline = true;
+
+          // Attempt to play the video
+          const playPromise = video.play();
+
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log('Autoplay video started successfully');
+            }).catch(error => {
+              console.log('Autoplay failed, trying fallback:', error);
+              // Try again after a short delay
+              setTimeout(() => {
+                video.play().catch(() => {
+                  console.log('Fallback autoplay also failed');
+                });
+              }, 1000);
+            });
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('promoVideo');
+
+        if (video) {
+          let videoLoaded = false;
+          let currentSourceIndex = 0;
+          const sources = video.querySelectorAll('source');
+
+          // Function to try next video source
+          function tryNextSource() {
+            currentSourceIndex++;
+            if (currentSourceIndex < sources.length) {
+              console.log('Trying next video source:', sources[currentSourceIndex].src);
+              video.src = sources[currentSourceIndex].src;
+              video.load();
+              // Try to autoplay the new source
+              setTimeout(() => {
+                initializeAutoplayVideo();
+              }, 500);
+            } else {
+              console.log('All video sources failed, showing fallback');
+              showVideoFallback();
+            }
+          }
+
+          // Function to show fallback content
+          function showVideoFallback() {
+            const videoContainer = video.closest('.video-container');
+            if (videoContainer) {
+              video.style.display = 'none';
+
+              const fallback = document.createElement('div');
+              fallback.className = 'video-fallback text-center p-5 position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center';
+              fallback.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%)';
+              fallback.innerHTML = `
+                <i class="bi bi-images fs-1 text-white mb-3"></i>
+                <h5 class="text-white">WallpaperHub Experience</h5>
+                <p class="text-white-50 mb-4">Discover thousands of stunning wallpapers</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                  <a href="/signUpPage" class="btn btn-light btn-lg px-4">Get Started</a>
+                  <a href="/userHome" class="btn btn-outline-light btn-lg px-4">Explore Gallery</a>
+                </div>
+              `;
+              videoContainer.appendChild(fallback);
+            }
+          }
+
+          // Handle video loading states for autoplay
+          video.addEventListener('loadstart', function() {
+            console.log('Video loading started');
+          });
+
+          video.addEventListener('canplay', function() {
+            console.log('Video can start playing');
+            videoLoaded = true;
+            // Ensure autoplay starts when video is ready
+            initializeAutoplayVideo();
+          });
+
+          video.addEventListener('loadeddata', function() {
+            console.log('Video data loaded');
+            videoLoaded = true;
+          });
+
+          // Handle video play events
+          video.addEventListener('play', function() {
+            console.log('Video started playing');
+          });
+
+          video.addEventListener('playing', function() {
+            console.log('Video is playing smoothly');
+          });
+
+          // Handle video errors and try next source
+          video.addEventListener('error', function(e) {
+            console.error('Video error:', e);
+            console.log('Current source failed:', video.currentSrc || video.src);
+
+            // Try next source
+            setTimeout(() => {
+              tryNextSource();
+            }, 1000);
+          });
+
+          // Handle source errors
+          sources.forEach((source, index) => {
+            source.addEventListener('error', function(e) {
+              console.error(`Source ${index} error:`, e);
+            });
+          });
+
+          // Disable all user interactions with video
+          video.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+          });
+
+          video.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+          });
+
+          // Remove focus capability since no interaction is needed
+          video.removeAttribute('tabindex');
+          video.setAttribute('tabindex', '-1');
+
+          // Initial load attempt with autoplay
+          if (sources.length > 0) {
+            video.src = sources[0].src;
+            video.load();
+
+            // Try to start autoplay after load
+            video.addEventListener('loadedmetadata', function() {
+              initializeAutoplayVideo();
+            });
+          }
+
+          // Fallback timeout - if video doesn't load within 15 seconds, show fallback
+          setTimeout(() => {
+            if (!videoLoaded) {
+              console.log('Video loading timeout, showing fallback');
+              showVideoFallback();
+            }
+          }, 15000);
+
+          // Initialize autoplay immediately
+          initializeAutoplayVideo();
+        }
+
+        // Intersection Observer for autoplay optimization
+        if ('IntersectionObserver' in window) {
+          const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const video = document.getElementById('promoVideo');
+              if (entry.isIntersecting && video) {
+                console.log('Video section is in view - ensuring autoplay');
+                // Ensure video is playing when in view
+                if (video.paused) {
+                  initializeAutoplayVideo();
+                }
+              }
+            });
+          }, {
+            threshold: 0.3
+          });
+
+          const videoSection = document.querySelector('#promoVideo');
+          if (videoSection) {
+            videoObserver.observe(videoSection);
+          }
+        }
+
+        // Add smooth scroll to video section
+        const videoSection = document.querySelector('.video-container').closest('section');
+        if (videoSection) {
+          videoSection.id = 'video-section';
+        }
+
+        // Handle page visibility changes for autoplay
+        document.addEventListener('visibilitychange', function() {
+          const video = document.getElementById('promoVideo');
+          if (video && !document.hidden) {
+            // Page became visible, ensure video is playing
+            setTimeout(() => {
+              initializeAutoplayVideo();
+            }, 500);
+          }
+        });
+
+        // Handle window focus for autoplay
+        window.addEventListener('focus', function() {
+          const video = document.getElementById('promoVideo');
+          if (video) {
+            setTimeout(() => {
+              initializeAutoplayVideo();
+            }, 300);
+          }
+        });
+      });
+
+      // Function to replace video source (for when you have your custom video)
+      function updateVideoSource(newVideoUrl, posterUrl = null) {
+        const video = document.getElementById('promoVideo');
+        if (video) {
+          // Clear existing sources
+          const sources = video.querySelectorAll('source');
+          sources.forEach(source => source.remove());
+
+          // Add new source
+          const newSource = document.createElement('source');
+          newSource.src = newVideoUrl;
+          newSource.type = 'video/mp4';
+          video.appendChild(newSource);
+
+          if (posterUrl) {
+            video.poster = posterUrl;
+          }
+          video.load();
+
+          // Initialize autoplay for new video
+          setTimeout(() => {
+            initializeAutoplayVideo();
+          }, 1000);
+        }
+      }
+
+      // Example: Replace with your custom WallpaperHub promo video
+      // updateVideoSource('/static/videos/wallpaperhub-promo.mp4', '/static/images/video-poster.jpg');
+    </script>
+
+    <!-- Newsletter Subscription Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const newsletterForm = document.getElementById('newsletter-form');
+        const emailInput = document.getElementById('newsletter-email');
+        const submitBtn = document.getElementById('newsletter-submit-btn');
+        const messageDiv = document.getElementById('newsletter-message');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+
+        if (newsletterForm && emailInput && submitBtn) {
+          // Form submission handler
+          newsletterForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+
+            // Validate email
+            if (!email) {
+              showMessage('Please enter your email address.', 'error');
+              return;
+            }
+
+            if (!isValidEmail(email)) {
+              showMessage('Please enter a valid email address.', 'error');
+              return;
+            }
+
+            // Show loading state
+            setLoadingState(true);
+            hideMessage();
+
+            try {
+              // Get CSRF token
+              const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+              if (!csrfTokenElement) {
+                console.error('CSRF token not found!');
+                showMessage('Security token not found. Please refresh the page and try again.', 'error');
+                return;
+              }
+              const csrfToken = csrfTokenElement.value;
+              console.log('CSRF Token:', csrfToken);
+              console.log('Sending subscription request for email:', email);
+
+              // Send subscription request
+              const response = await fetch('/api/newsletter/subscribe/', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken,
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ email: email })
+              });
+
+              console.log('Response status:', response.status);
+              console.log('Response headers:', response.headers);
+
+              const data = await response.json();
+              console.log('Response data:', data);
+
+              if (data.success) {
+                showMessage(data.message, 'success');
+                emailInput.value = ''; // Clear the form
+
+                // Optional: Track successful subscription
+                if (typeof gtag !== 'undefined') {
+                  gtag('event', 'newsletter_subscribe', {
+                    'event_category': 'engagement',
+                    'event_label': 'footer_form'
+                  });
+                }
+              } else {
+                showMessage(data.error || 'An error occurred. Please try again.', 'error');
+              }
+
+            } catch (error) {
+              console.error('Newsletter subscription error:', error);
+              console.error('Error details:', error.message);
+              console.error('Error stack:', error.stack);
+              showMessage('Network error. Please check your connection and try again.', 'error');
+            } finally {
+              setLoadingState(false);
+            }
+          });
+
+          // Email input validation on blur
+          emailInput.addEventListener('blur', function() {
+            const email = this.value.trim();
+            if (email && !isValidEmail(email)) {
+              showMessage('Please enter a valid email address.', 'error');
+            } else {
+              hideMessage();
+            }
+          });
+
+          // Clear error message when user starts typing
+          emailInput.addEventListener('input', function() {
+            if (messageDiv.classList.contains('error')) {
+              hideMessage();
+            }
+          });
+        }
+
+        // Helper functions
+        function setLoadingState(loading) {
+          if (loading) {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            emailInput.disabled = true;
+          } else {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            btnText.classList.remove('d-none');
+            btnLoading.classList.add('d-none');
+            emailInput.disabled = false;
+          }
+        }
+
+        function showMessage(message, type) {
+          messageDiv.textContent = message;
+          messageDiv.className = `newsletter-message ${type}`;
+          messageDiv.classList.remove('d-none');
+
+          // Auto-hide success messages after 5 seconds
+          if (type === 'success') {
+            setTimeout(() => {
+              hideMessage();
+            }, 5000);
+          }
+        }
+
+        function hideMessage() {
+          messageDiv.classList.add('d-none');
+          messageDiv.className = 'newsletter-message d-none';
+        }
+
+        function isValidEmail(email) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+      });
+    </script>
+  </body>
+</html>

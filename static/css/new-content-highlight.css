@@ -1,0 +1,51 @@
+/* Styles for highlighting new content when "Explore More" is clicked */
+
+@keyframes newContentPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(101, 85, 143, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 20px 5px rgba(101, 85, 143, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(101, 85, 143, 0);
+    }
+}
+
+/* Class for newly loaded content */
+.new-content {
+    position: relative;
+    z-index: 5;
+}
+
+/* Add a subtle border to highlight new content */
+.wallpaper-item.new-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid #65558F;
+    border-radius: 10px;
+    z-index: 3;
+    pointer-events: none;
+    animation: borderFade 2s ease forwards;
+}
+
+@keyframes borderFade {
+    0% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Dark theme support */
+[data-theme="dark"] .wallpaper-item.new-content::before {
+    border-color: #8A7BC8;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories | WallpaperHub</title>
+
+    <!-- Easter Egg Loader CSS - Load this first for immediate display -->
+    <link rel="stylesheet" href="{% static 'css/easter-egg-loader.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Critical CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/smooth-scroll.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sun-moon-toggle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cursor-fix.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" height="40" class="me-2" style="border-radius: 8px;">
+                <span>WallpaperHub</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userHome/">Browse</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile/">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout/">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login/">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup/">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Categories Section -->
+    <section class="py-5 bg-light">
+        <div class="container py-5">
+            <h1 class="display-4 fw-bold mb-5 text-center">Explore Categories</h1>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/abstract/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Abstract" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Abstract</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/nature/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Nature" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Nature</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/city/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="City" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">City</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/space/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Space" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Space</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/neon/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Neon" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Neon</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/landscape/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Landscape" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Landscape</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/sunset/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Sunset" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Sunset</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="javascript:void(0);" class="text-decoration-none category-link" data-url="/category-preview/minimal/" style="cursor: pointer !important;">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544985361-b420d7a77043?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Minimal" style="height: 160px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Minimal</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5" style="background-color: var(--footer-bg); color: var(--text-color);">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <a class="d-flex align-items-center text-decoration-none mb-3 footer-logo" href="/">
+                        <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3 bg-white p-1">
+                        <span class="fs-4 fw-bold">WallpaperHub</span>
+                    </a>
+                    <p class="text-muted">Your ultimate destination for high-quality wallpapers that transform your digital experience.</p>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-2">
+                    <h5 class="mb-4">Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/" class="text-muted text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="/userHome/" class="text-muted text-decoration-none">Browse</a></li>
+                        <li class="mb-2"><a href="/login/" class="text-muted text-decoration-none">Login</a></li>
+                        <li class="mb-2"><a href="/signup/" class="text-muted text-decoration-none">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-2">
+                    <h5 class="mb-4">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/nature/" style="cursor: pointer !important;">Nature</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/abstract/" style="cursor: pointer !important;">Abstract</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/minimal/" style="cursor: pointer !important;">Minimal</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/space/" style="cursor: pointer !important;">Space</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/city/" style="cursor: pointer !important;">City</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/neon/" style="cursor: pointer !important;">Neon</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/landscape/" style="cursor: pointer !important;">Landscape</a></li>
+                        <li class="mb-2"><a href="javascript:void(0);" class="text-muted text-decoration-none category-link" data-url="/category-preview/sunset/" style="cursor: pointer !important;">Sunset</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="background-color: var(--border-color);">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-muted mb-0">© 2025 WallpaperHub. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="/privacyPolicy.html" class="text-muted text-decoration-none">Privacy Policy</a></li>
+                        <li class="list-inline-item"><span class="text-muted">·</span></li>
+                        <li class="list-inline-item"><a href="/termsOfService.html" class="text-muted text-decoration-none">Terms of Service</a></li>
+                        <li class="list-inline-item"><span class="text-muted">·</span></li>
+                        <li class="list-inline-item"><a href="/aboutUs.html" class="text-muted text-decoration-none">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme Toggle Script -->
+    <script src="{% static 'js/sun-moon-toggle.js' %}"></script>
+
+    <!-- Fix for category links -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix for regular category links
+            const regularCategoryLinks = document.querySelectorAll('.text-decoration-none:not(.category-link)');
+            regularCategoryLinks.forEach(link => {
+                link.style.cursor = 'pointer';
+
+                // Add click event listener to ensure links work
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('/category-preview/')) {
+                        e.preventDefault();
+                        window.location.href = href;
+                    }
+                });
+            });
+
+            // Fix for special category links (Neon, Landscape, Sunset)
+            const specialCategoryLinks = document.querySelectorAll('.category-link');
+            specialCategoryLinks.forEach(link => {
+                link.style.cursor = 'pointer';
+
+                // Add click event listener to ensure links work
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        window.location.href = url;
+                    }
+                });
+
+                // Also add touchend event for mobile devices
+                link.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Include Cookie Consent Banner -->
+    {% include 'cookie_consent_include.html' %}
+</body>
+</html>

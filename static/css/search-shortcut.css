@@ -1,0 +1,21 @@
+/* Styles for the search shortcut functionality */
+
+/* Highlight effect when search is focused via shortcut */
+.search-shortcut-highlight {
+    animation: search-pulse 1s ease;
+    box-shadow: 0 0 15px rgba(101, 85, 143, 0.8) !important;
+}
+
+@keyframes search-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(101, 85, 143, 0.8);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(101, 85, 143, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(101, 85, 143, 0);
+    }
+}
+
+/* Shortcut indicator styles removed as requested by the user */

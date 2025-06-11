@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - WallpaperHub{% endblock %}
+
+{% block styles %}
+    <style>
+        /* About Us Page Styles */
+        .page-header {
+            padding-top: 8rem;
+            padding-bottom: 3rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .team-member {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .team-member img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            border: 5px solid var(--primary);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .team-member h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .team-member p {
+            color: var(--footer-text);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(101, 85, 143, 0.1);
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .social-links a {
+            background-color: rgba(77, 120, 204, 0.1);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary);
+            color: var(--text-color);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--card-shadow);
+            border-top-color: var(--primary-dark);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: 4px solid var(--bg-color);
+        }
+
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-container {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px var(--card-shadow);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </a>
+            <button class="navbar-toggler" type="button" onclick="toggleSideDrawer(event);">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userHome">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/aboutUs.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/termsOfService.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/privacyPolicy.html">Privacy</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item ms-lg-3 user-profile">
+                      <div class="profile-photo">
+                        <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+                      </div>
+                      <div class="user-dropdown">
+                        <div class="dropdown-header">{{ user.email }}</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+                        <a href="{% url 'user_home' %}" class="dropdown-item"><i class="bi bi-grid"></i> User Home</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                      </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary rounded-pill px-4" href="/loginpage">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </div>
+            <button class="close-drawer" onclick="toggleSideDrawer(event);">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-divider"></div>
+        <ul class="drawer-links">
+            <li><a href="/" class="drawer-item"><i class="bi bi-house"></i> Home</a></li>
+            <li><a href="/userHome" class="drawer-item"><i class="bi bi-compass"></i> Explore</a></li>
+            <li><a href="/aboutUs.html" class="drawer-item active"><i class="bi bi-info-circle"></i> About Us</a></li>
+            <li><a href="/termsOfService.html" class="drawer-item"><i class="bi bi-file-text"></i> Terms</a></li>
+            <li><a href="/privacyPolicy.html" class="drawer-item"><i class="bi bi-shield-check"></i> Privacy</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Account</a></li>
+            <li><a href="{% url 'user_home' %}" class="drawer-item"><i class="bi bi-grid"></i> User Home</a></li>
+            <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+            <li><a href="/loginpage" class="drawer-item login-btn"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>

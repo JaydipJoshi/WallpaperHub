@@ -1,0 +1,139 @@
+/**
+ * Cookie Consent Styles for WallpaperHub
+ */
+
+/* Cookie Consent Banner Container */
+#cookie-consent-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    z-index: 9999;
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    max-width: 300px;
+    width: 80%;
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 2px 6px 2px;
+    border-radius: 1rem;
+    background-color: white;
+}
+
+/* Active state - show the banner */
+#cookie-consent-banner.active {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Hiding state - for animation when closing */
+#cookie-consent-banner.hiding {
+    transform: translateX(-50%) translateY(100px);
+    opacity: 0;
+}
+
+/* Banner content container */
+.cookie-consent-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2.25rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 1.5rem;
+    position: relative;
+}
+
+/* Cookie icon container */
+.cookie-icon {
+    position: relative;
+    margin: 0 auto -1rem auto;
+    margin-top: -4rem;
+    margin-bottom: 2rem;
+}
+
+/* Heading style */
+.cookie-consent-heading {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    margin-right: auto;
+    color: #4b5563;
+}
+
+/* Text content */
+.cookie-consent-text {
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-align: justify;
+}
+
+/* Link style */
+.cookie-consent-link {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.cookie-consent-link:hover {
+    color: #634647;
+}
+
+/* More options button */
+.more-options-button {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    margin-right: auto;
+    color: #71717a;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.more-options-button:hover {
+    color: #634647;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Accept button */
+.accept-button {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    color: #634647;
+    background-color: #ddad81;
+    border: none;
+}
+
+.accept-button:hover {
+    color: #ddad81;
+    background-color: #634647;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    #cookie-consent-banner {
+        width: 90%;
+        max-width: 320px;
+    }
+    
+    .cookie-consent-content {
+        padding: 2rem 1rem 1rem;
+    }
+    
+    .cookie-icon {
+        margin-top: -3.5rem;
+    }
+}

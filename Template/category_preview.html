@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category }} Wallpapers | WallpaperHub{% endblock %}
+
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/category-preview-fix.css' %}">
+<link rel="stylesheet" href="{% static 'css/cursor-fix.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Category Header Section -->
+<section class="py-5 bg-light">
+  <div class="container py-5 text-center">
+    <h1 class="display-4 fw-bold mb-3 text-black">{{ category }} Wallpapers</h1>
+    <p class="lead text-muted mb-4">{{ description }}</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{% url 'signuppage' %}" class="btn btn-primary rounded-pill px-4 py-2 text-white">Sign Up to Download</a>
+      <a href="{% url 'loginpage' %}" class="btn btn-outline-primary rounded-pill px-4 py-2 text-black">Login</a>
+    </div>
+  </div>
+</section>
+
+<!-- Wallpapers Grid Section -->
+<section class="py-5">
+  <div class="container py-5">
+    {% if images %}
+    <div class="row g-3" id="wallpapers-grid">
+      {% for image in images %}
+      <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+          <div class="card-img-container position-relative" style="height: 240px;">
+            <img src="{{ image.urls.regular }}" alt="{{ image.alt_description|default:'Beautiful wallpaper' }}" class="card-img-top h-100 w-100 object-fit-cover">
+            <div class="card-img-overlay d-flex flex-column justify-content-end p-3 text-white" style="background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.1), transparent);">
+              <h5 class="card-title mb-0 text-truncate">{{ image.alt_description|default:'Beautiful wallpaper'|title }}</h5>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="d-flex align-items-center">
+                  <small class="text-white-50">by {{ image.user.name }}</small>
+                </div>
+                <div class="preview-actions">
+                  <a href="{% url 'signuppage' %}" class="btn btn-sm btn-light rounded-pill">
+                    <i class="bi bi-download"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <div class="mb-4">
+        <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+      </div>
+      <h3>No wallpapers found</h3>
+      <p class="text-muted">We couldn't find any wallpapers in this category. Please try another category.</p>
+      <a href="/" class="btn btn-primary rounded-pill px-4 mt-3">Back to Home</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 text-black" style="background-color: var(--primary);">
+  <div class="container py-5 text-center">
+    <h2 class="fw-bold mb-4">Want to Download These Wallpapers?</h2>
+    <p class="lead mb-5">Sign up for free to download high-quality wallpapers and customize your devices.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'signuppage' %}" class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill text-black">Sign Up Now</a>
+      <a href="{% url 'loginpage' %}" class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill text-white" style="opacity: 1; visibility: visible; display: inline-block;">Login</a>
+    </div>
+  </div>
+</section>
+
+<!-- More Categories Section -->
+<section class="py-5 bg-light">
+  <div class="container py-5">
+    <h2 class="text-center fw-bold mb-5 text-black">Explore More Categories</h2>
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/abstract/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Abstract" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Abstract</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/nature/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Nature" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Nature</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/city/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="City" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">City</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/space/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Space" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Space</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/neon/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Neon" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Neon</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/landscape/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Landscape" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Landscape</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/sunset/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Sunset" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Sunset</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="/category-preview/minimal/" class="text-decoration-none" style="cursor: pointer !important;">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1544985361-b420d7a77043?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="Minimal" style="height: 160px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Minimal</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add masonry layout for desktop and tablet
+    if (window.innerWidth >= 768) {
+      const grid = document.getElementById('wallpapers-grid');
+      if (grid) {
+        // Initialize masonry layout
+        const msnry = new Masonry(grid, {
+          itemSelector: '.col-6',
+          percentPosition: true
+        });
+
+        // Update layout after images load
+        imagesLoaded(grid).on('progress', function() {
+          msnry.layout();
+        });
+      }
+    }
+
+    // Fix for category links
+    const categoryLinks = document.querySelectorAll('.text-decoration-none');
+    categoryLinks.forEach(link => {
+      link.style.cursor = 'pointer';
+
+      // Add click event listener to ensure links work
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('/category-preview/')) {
+          window.location.href = href;
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

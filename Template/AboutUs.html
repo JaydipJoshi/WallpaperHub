@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - WallpaperHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-theme-switch.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+    <script src="{% static 'js/custom-theme-switch.js' %}"></script>
+    <style>
+        /* Side Drawer Styles */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--card-bg, #FFFFFF);
+            z-index: 1050;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .side-drawer.active {
+            right: 0;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+        }
+
+        .drawer-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary, #65558F);
+        }
+
+        .close-drawer {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color, #333333);
+        }
+
+        .drawer-divider {
+            height: 1px;
+            background-color: var(--border-color, #e0e0e0);
+            margin: 0.5rem 0;
+        }
+
+        .drawer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: var(--text-color, #333333);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+            transition: all 0.2s ease;
+        }
+
+        .drawer-item i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--primary, #65558F);
+        }
+
+        .drawer-item:hover,
+        .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.1);
+        }
+
+        .drawer-item.login-btn {
+            background-color: var(--primary, #65558F);
+            color: white;
+            margin: 1rem;
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .drawer-item.login-btn i {
+            color: white;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .side-drawer {
+            background-color: var(--card-bg, #161B27);
+        }
+
+        [data-theme="dark"] .drawer-header,
+        [data-theme="dark"] .drawer-divider,
+        [data-theme="dark"] .drawer-item {
+            border-color: var(--border-color, #1E2433);
+        }
+
+        [data-theme="dark"] .drawer-item {
+            color: var(--text-color, #E0E0E0);
+        }
+
+        [data-theme="dark"] .drawer-item:hover,
+        [data-theme="dark"] .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.2);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            transition: all 0.3s ease;
+            background-color: var(--navbar-bg);
+            box-shadow: 0 2px 10px var(--card-shadow);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark);
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* About Us Page Styles */
+        .page-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 7rem 0 4rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .team-member {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .team-member img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            border: 5px solid var(--primary);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .team-member h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .team-member p {
+            color: var(--footer-text);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(101, 85, 143, 0.1);
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .social-links a {
+            background-color: rgba(77, 120, 204, 0.1);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: var(--light);
+            transform: translateY(-3px);
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary);
+            color: var(--text-color);
+            box-shadow: 0 5px 15px var(--card-shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--card-shadow);
+            border-top-color: var(--primary-dark);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            border: 4px solid var(--bg-color);
+        }
+
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-container {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px var(--card-shadow);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast-notification {{ message.tags }}">
+                    <div class="toast-content">
+                        <i class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+                        <div class="toast-message">{{ message }}</div>
+                    </div>
+                    <button class="toast-close">&times;</button>
+                    <div class="toast-progress"></div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </a>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userHome">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/aboutUs.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/termsOfService.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/privacyPolicy.html">Privacy</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item ms-lg-3 user-profile">
+                      <div class="profile-photo">
+                        <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+                      </div>
+                      <div class="user-dropdown">
+                        <div class="dropdown-header">{{ user.email }}</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+                        <a href="{% url 'user_home' %}" class="dropdown-item"><i class="bi bi-grid"></i> User Home</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                      </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary rounded-pill px-4" href="/loginpage">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </div>
+            <button class="close-drawer" onclick="toggleSideDrawer(event);">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-divider"></div>
+        <ul class="drawer-links">
+            <li><a href="/" class="drawer-item"><i class="bi bi-house"></i> Home</a></li>
+            <li><a href="/userHome" class="drawer-item"><i class="bi bi-compass"></i> Explore</a></li>
+            <li><a href="/aboutUs.html" class="drawer-item active"><i class="bi bi-info-circle"></i> About Us</a></li>
+            <li><a href="/termsOfService.html" class="drawer-item"><i class="bi bi-file-text"></i> Terms</a></li>
+            <li><a href="/privacyPolicy.html" class="drawer-item"><i class="bi bi-shield-check"></i> Privacy</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Account</a></li>
+            <li><a href="{% url 'user_home' %}" class="drawer-item"><i class="bi bi-grid"></i> User Home</a></li>
+            <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+            <li><a href="/loginpage" class="drawer-item login-btn"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold animate__animated animate__fadeInUp">About WallpaperHub</h1>
+            <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Created by students, for everyone who loves beautiful wallpapers</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Our Story Section -->
+        <div class="content-card mb-5">
+            <h2 class="section-title">Our Story</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <p>WallpaperHub was born from a simple idea during our college's internal exam project. As three computer science students with a passion for design and technology, we wanted to create a platform where people could easily find and share high-quality wallpapers for all their devices.</p>
+                    <p>What started as an academic project quickly evolved into something we're truly passionate about. We believe that the right wallpaper can transform your digital experience, adding personality and inspiration to the screens you interact with every day.</p>
+                    <p>Our mission is to build a community-driven platform that connects creators with users looking for the perfect visual backdrop for their digital life.</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070" alt="Team working together" class="img-fluid rounded-4 shadow">
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="content-card mb-5">
+            <h2 class="section-title">What Makes Us Special</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="bi bi-image-fill feature-icon"></i>
+                        <h3>Curated Collections</h3>
+                        <p>We carefully curate wallpapers into themed collections, making it easy to find exactly what you're looking for.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="bi bi-laptop feature-icon"></i>
+                        <h3>Multi-Device Support</h3>
+                        <p>Our wallpapers are optimized for all devices, from smartphones and tablets to desktop computers.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="bi bi-people-fill feature-icon"></i>
+                        <h3>Community Driven</h3>
+                        <p>We believe in the power of community. Users can upload, like, and share their favorite wallpapers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">10,000+</div>
+                        <div class="stat-label">Wallpapers</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">Happy Users</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Collections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meet the Team Section -->
+        <div class="content-card mb-5">
+            <h2 class="section-title">Meet the Team</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'MyImage.jpg' %}" alt="Team Member 1">
+                        <h3>Jaydip Joshi</h3>
+                        <p>Frontend Developer</p>
+                        <p class="mb-3">Computer Science student with a passion for creating beautiful user interfaces and experiences. Also good at AI prompt engineering.</p>
+                        <div class="social-links">
+                            <a href="https://github.com/JaydipJoshi" target="_blank"><i class="bi bi-github"></i></a>
+                            <a href="https://www.linkedin.com/in/jaydip-joshi-578308305/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'PrathinImage.jpg' %}" alt="Team Member 2">
+                        <h3>Prathin Bapodra</h3>
+                        <p>Backend Developer</p>
+                        <p class="mb-3">Database expert and algorithm enthusiast who ensures our platform runs smoothly and efficiently.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-github"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="{% static 'YogeshImage.jpg' %}" alt="Team Member 3">
+                        <h3>Yogesh Malvi</h3>
+                        <p>UI/UX Designer</p>
+                        <p class="mb-3">Creative mind behind our visual identity, focused on creating intuitive and engaging user experiences.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-github"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Journey Section -->
+        <div class="content-card mb-5">
+            <h2 class="section-title">Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">January 2025</div>
+                    <h4>The Beginning</h4>
+                    <p>WallpaperHub started as an idea for our college's internal exam project. We wanted to create something useful that showcased our technical skills.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">March 2025</div>
+                    <h4>First Prototype</h4>
+                    <p>We developed our first working prototype with basic functionality for browsing and downloading wallpapers.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2025</div>
+                    <h4>Project Submission</h4>
+                    <p>We submitted the project for our internal exam and received excellent feedback from our professors.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">June 2025</div>
+                    <h4>Public Launch</h4>
+                    <p>Encouraged by the positive response, we decided to continue developing the platform and launched it publicly.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Present</div>
+                    <h4>Growing Community</h4>
+                    <p>We're continuously improving WallpaperHub based on user feedback and expanding our collection of wallpapers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Future Plans Section -->
+        <div class="content-card">
+            <h2 class="section-title">Looking Ahead</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070" alt="Future vision" class="img-fluid rounded-4 shadow">
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <p>As we continue to grow, we have exciting plans for the future of WallpaperHub:</p>
+                    <ul class="mb-4">
+                        <li>Expanding our collection with more exclusive and high-quality wallpapers</li>
+                        <li>Implementing AI-powered wallpaper recommendations based on user preferences</li>
+                        <li>Developing mobile apps for iOS and Android for a seamless experience</li>
+                        <li>Creating a marketplace for artists to sell premium wallpapers</li>
+                        <li>Building more community features to connect wallpaper enthusiasts</li>
+                    </ul>
+                    <p>We're committed to making WallpaperHub the best destination for finding the perfect wallpaper for any device, mood, or occasion.</p>
+                    <div class="mt-4">
+                        <a href="/signUpPage" class="btn btn-primary me-3">Join Our Community</a>
+                        <a href="/userHome" class="btn btn-outline-primary">Explore Wallpapers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">WallpaperHub</h5>
+                    <p>Discover and share the most beautiful wallpapers for all your devices.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/userHome">Explore</a></li>
+                        <li><a href="/aboutUs.html">About Us</a></li>
+                        <li><a href="/termsOfService.html">Terms of Service</a></li>
+                        <li><a href="/privacyPolicy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Connect With Us</h5>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 WallpaperHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- User Profile Script -->
+    <script src="{% static 'js/user-profile.js' %}" defer></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Function to toggle side drawer
+        function toggleSideDrawer(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var sideDrawer = document.getElementById('side-drawer');
+            var overlay = document.getElementById('drawer-overlay');
+
+            if (sideDrawer) {
+                sideDrawer.classList.toggle('active');
+
+                if (overlay) {
+                    overlay.classList.toggle('active');
+                }
+
+                // Prevent body scrolling when drawer is open
+                if (sideDrawer.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prevent Bootstrap's default navbar toggler behavior
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSideDrawer(e);
+                    return false;
+                });
+            }
+
+            // Disable Bootstrap's collapse functionality
+            const bsCollapse = document.getElementById('navbarNav');
+            if (bsCollapse) {
+                bsCollapse.classList.remove('collapse');
+                bsCollapse.classList.add('d-none', 'd-lg-block');
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white', 'shadow');
+                } else {
+                    navbar.classList.remove('bg-white', 'shadow');
+                }
+            });
+
+            // Toast notification handling
+            const toastContainer = document.getElementById('toast-container');
+            const toasts = document.querySelectorAll('.toast-notification');
+
+            // Function to remove a toast
+            function removeToast(toast) {
+                toast.style.animation = 'slideOut 0.5s ease forwards';
+                setTimeout(() => {
+                    toast.remove();
+                    // If no more toasts, remove the container
+                    if (toastContainer && toastContainer.children.length === 0) {
+                        toastContainer.remove();
+                    }
+                }, 500);
+            }
+
+            // Add click event to close buttons
+            document.querySelectorAll('.toast-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const toast = this.parentElement;
+                    removeToast(toast);
+                });
+            });
+
+            // Auto-remove toasts after 5 seconds
+            if (toasts.length > 0) {
+                toasts.forEach(toast => {
+                    setTimeout(() => {
+                        if (toast.parentElement) {
+                            removeToast(toast);
+                        }
+                    }, 5000);
+                });
+            }
+
+            // Animate elements when they come into view
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.feature-card, .team-member, .timeline-item');
+
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+
+                    if (elementPosition < windowHeight - 100) {
+                        element.classList.add('animate__animated', 'animate__fadeInUp');
+                    }
+                });
+            };
+
+            // Run once on page load
+            animateOnScroll();
+
+            // Run on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

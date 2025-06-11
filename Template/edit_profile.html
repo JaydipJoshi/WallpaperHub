@@ -1,0 +1,1192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | WallpaperHub</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Theme Toggle CSS -->
+    <link rel="stylesheet" href="{% static 'css/sun-moon-toggle.css' %}">
+
+    <style>
+        /* Dark theme overrides */
+        body.dark-theme {
+            background-color: #0E121B;
+            color: #E0E0E0;
+        }
+
+        body.dark-theme header {
+            background-color: #161B27;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .logo {
+            color: #8A7DCE;
+        }
+
+        body.dark-theme .nav-link {
+            color: #E0E0E0;
+        }
+
+        body.dark-theme .nav-link:hover {
+            color: #8A7DCE;
+        }
+
+        body.dark-theme .edit-profile-form {
+            background-color: #161B27;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .form-header h1 {
+            color: #8A7DCE;
+        }
+
+        body.dark-theme .form-header p {
+            color: #A0AEC0;
+        }
+
+        body.dark-theme .form-label {
+            color: #E0E0E0;
+        }
+
+        body.dark-theme .form-text {
+            color: #A0AEC0;
+        }
+
+        body.dark-theme .form-control {
+            background-color: #1E2433;
+            color: #E0E0E0;
+            border-color: #2D3748;
+        }
+
+        body.dark-theme .form-control:focus {
+            border-color: #8A7DCE;
+            box-shadow: 0 0 0 2px rgba(138, 125, 206, 0.2);
+        }
+
+        body.dark-theme .form-control:disabled {
+            background-color: #2D3748;
+            color: #A0AEC0;
+        }
+
+        body.dark-theme .profile-photo {
+            border-color: #8A7DCE;
+        }
+
+        body.dark-theme .upload-btn {
+            background-color: #8A7DCE;
+            color: #000000 !important;
+        }
+
+        body.dark-theme .upload-btn:hover {
+            background-color: #6A5EAE;
+            color: #000000 !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .btn-primary {
+            background-color: #8A7DCE;
+            color: #000000 !important;
+        }
+
+        body.dark-theme .btn-primary:hover {
+            background-color: #6A5EAE;
+            color: #000000 !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .btn-secondary {
+            background-color: #2D3748;
+            color: #E0E0E0;
+        }
+
+        body.dark-theme .btn-secondary:hover {
+            background-color: #4A5568;
+            border-color: #4A5568;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            color: #FFFFFF;
+        }
+
+        /* Enhanced button styling for dark theme */
+        body.dark-theme .btn-secondary {
+            background-color: #2D3748;
+            color: #E0E0E0;
+            border: 2px solid #4A5568;
+        }
+
+        body.dark-theme .btn-primary {
+            background-color: #8A7DCE;
+            color: #000000;
+            border: 2px solid #8A7DCE;
+        }
+
+        body.dark-theme .btn-primary:hover {
+            background-color: #6A5EAE;
+            border-color: #6A5EAE;
+            color: #000000;
+            box-shadow: 0 4px 12px rgba(138, 125, 206, 0.4);
+        }
+
+        body.dark-theme .toast-notification {
+            background-color: #161B27;
+            color: #E0E0E0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-theme .toast-close {
+            color: #A0AEC0;
+        }
+
+        body.dark-theme .toast-close:hover {
+            color: #E53E3E;
+        }
+
+        body.dark-theme .toast-progress::before {
+            background-color: #8A7DCE;
+        }
+        :root {
+            --primary: #65558F;
+            --primary-dark: #534979;
+            --secondary: #F8F6FF;
+            --dark: #333333;
+            --light: #FFFFFF;
+            --gray: #F5F5F5;
+            --success: #4CAF50;
+            --danger: #F44336;
+            --warning: #FF9800;
+            --info: #2196F3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--secondary);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            margin-left: 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 320px;
+            height: 100vh;
+            background-color: var(--light);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        /* Mobile Nav Header */
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 2px solid var(--gray);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .mobile-nav-logo {
+            color: white !important;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-decoration: none !important;
+        }
+
+        .mobile-nav-logo:hover {
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .mobile-nav-logo:visited {
+            color: white !important;
+        }
+
+        .mobile-nav-logo:active {
+            color: white !important;
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Nav Content */
+        .mobile-nav-content {
+            padding: 30px 25px;
+        }
+
+        .mobile-nav-section {
+            margin-bottom: 30px;
+        }
+
+        .mobile-nav-section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .mobile-nav-item:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .mobile-nav-item i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Mobile Theme Toggle Section */
+        .mobile-theme-section {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid var(--gray);
+        }
+
+        .mobile-theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: var(--gray);
+            border-radius: 10px;
+        }
+
+        .mobile-theme-label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .mobile-theme-label i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .mobile-theme-toggle .switch {
+            margin: 0;
+            transform: scale(0.8);
+        }
+
+        /* Overlay */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Dark theme for hamburger menu */
+        body.dark-theme .hamburger span {
+            background-color: #E0E0E0;
+        }
+
+        body.dark-theme .mobile-nav {
+            background-color: #161B27;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .mobile-nav-header {
+            border-bottom: 2px solid #2D3748;
+            background: linear-gradient(135deg, #8A7DCE, #6A5EAE);
+        }
+
+        body.dark-theme .mobile-nav-section-title {
+            color: #8A7DCE;
+        }
+
+        body.dark-theme .mobile-nav-item {
+            color: #E0E0E0;
+        }
+
+        body.dark-theme .mobile-nav-item:hover {
+            background-color: #8A7DCE;
+            color: #000000;
+        }
+
+        body.dark-theme .mobile-theme-section {
+            border-top: 2px solid #2D3748;
+        }
+
+        body.dark-theme .mobile-theme-toggle {
+            background-color: #2D3748;
+        }
+
+        body.dark-theme .mobile-theme-label {
+            color: #E0E0E0;
+        }
+
+        /* Ensure mobile nav logo is always white */
+        body.dark-theme .mobile-nav-logo {
+            color: white !important;
+        }
+
+        body.dark-theme .mobile-nav-logo:hover {
+            color: white !important;
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Edit Profile Form */
+        .edit-profile-form {
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(101, 85, 143, 0.2);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .profile-photo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            margin-right: 20px;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-info {
+            flex: 1;
+        }
+
+        .photo-info p {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .upload-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(101, 85, 143, 0.3);
+        }
+
+        .upload-btn i {
+            font-size: 1rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        .upload-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .upload-btn span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            font-size: 1rem;
+            text-align: center;
+            gap: 10px;
+            line-height: 1.2;
+            vertical-align: middle;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(101, 85, 143, 0.3);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: #495057;
+            text-decoration: none;
+        }
+
+        /* Button icons */
+        .btn i {
+            font-size: 1rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        .btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .btn-primary:hover i {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .btn span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast-notification {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: white;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            animation: slideIn 0.5s ease forwards;
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-notification.success {
+            border-left: 5px solid var(--success);
+        }
+
+        .toast-notification.error {
+            border-left: 5px solid var(--danger);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .toast-notification.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast-notification.error .toast-icon {
+            color: var(--danger);
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .toast-close:hover {
+            color: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        .toast-progress {
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .toast-progress::before {
+            content: '';
+            display: block;
+            height: 100%;
+            background-color: var(--primary);
+            animation: progress 5s linear forwards;
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .edit-profile-form {
+                padding: 20px;
+            }
+
+            .btn-container {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: auto;
+                padding: 15px 25px;
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .mobile-nav {
+                width: 100%;
+                right: -100%;
+            }
+
+            .mobile-nav.active {
+                right: 0;
+            }
+
+            .edit-profile-form {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="{% url 'user_home' %}" class="logo">WallpaperHub</a>
+        <div class="nav-links">
+            <a href="{% url 'profile' %}" class="nav-link">Back to Profile</a>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+            <div class="theme-toggle-container">
+                <label class="switch">
+                    <span class="sun">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g fill="#ffd43b">
+                                <circle r="5" cy="12" cx="12"></circle>
+                                <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.24z"></path>
+                            </g>
+                        </svg>
+                    </span>
+                    <span class="moon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                            <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+                        </svg>
+                    </span>
+                    <input type="checkbox" class="input" id="edit-profile-theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Mobile Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav" id="mobileNav">
+        <!-- Mobile Nav Header -->
+        <div class="mobile-nav-header">
+            <a href="{% url 'user_home' %}" class="mobile-nav-logo">WallpaperHub</a>
+            <button class="mobile-nav-close" id="mobileNavClose">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Content -->
+        <div class="mobile-nav-content">
+            <!-- Navigation Section -->
+            <div class="mobile-nav-section">
+                <div class="mobile-nav-section-title">Navigation</div>
+                <a href="{% url 'profile' %}" class="mobile-nav-item">
+                    <i class="bi bi-person-circle"></i>
+                    <span>Back to Profile</span>
+                </a>
+                <a href="{% url 'logout' %}" class="mobile-nav-item">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+            <!-- Theme Section -->
+            <div class="mobile-nav-section mobile-theme-section">
+                <div class="mobile-nav-section-title">Appearance</div>
+                <div class="mobile-theme-toggle">
+                    <div class="mobile-theme-label">
+                        <i class="bi bi-palette"></i>
+                        <span>Dark Mode</span>
+                    </div>
+                    <label class="switch">
+                        <span class="sun">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <g fill="#ffd43b">
+                                    <circle r="5" cy="12" cx="12"></circle>
+                                    <path d="m21 13h-1a1 1 0 0 1 0-2h1a1 0 0 1 0 2zm-17 0h-1a1 1 0 0 1 0-2h1a1 1 0 0 1 0 2zm13.66-5.66a1 1 0 0 1 -.66-.29 1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1 -.75.29zm-12.02 12.02a1 1 0 0 1 -.71-.29 1 1 0 0 1 0-1.41l.71-.66a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1 -.7.24zm6.36-14.36a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm0 17a1 1 0 0 1 -1-1v-1a1 1 0 0 1 2 0v1a1 1 0 0 1 -1 1zm-5.66-14.66a1 1 0 0 1 -.7-.29l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29zm12.02 12.02a1 1 0 0 1 -.7-.29l-.66-.71a1 1 0 0 1 1.36-1.36l.71.71a1 1 0 0 1 0 1.41 1 1 0 0 1 -.71.29z"></path>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="moon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                                <path d="m223.5 32c-123.5 0-223.5 100.3-223.5 224s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
+                            </svg>
+                        </span>
+                        <input type="checkbox" class="input" id="mobile-theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Edit Profile Form -->
+        <div class="edit-profile-form">
+            <div class="form-header">
+                <h1>Edit Profile</h1>
+                <p>Update your profile information</p>
+            </div>
+
+            <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="profile-photo-container">
+                    <div class="profile-photo">
+                        {% if profile_image %}
+                            <img src="{{ profile_image }}?v={{ timestamp }}" alt="{{ username }}" id="profile-preview">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ username }}" id="profile-preview">
+                        {% endif %}
+                    </div>
+                    <div class="photo-info">
+                        <p>Upload a custom profile photo or use the automatically generated one.</p>
+                        <div class="upload-btn-wrapper">
+                            <button class="upload-btn" type="button">
+                                <i class="bi bi-camera"></i>
+                                <span>Choose Photo</span>
+                            </button>
+                            <input type="file" name="profile_image" id="profile-image-upload" accept="image/*">
+                        </div>
+                        <div class="form-text">Recommended size: 200x200 pixels. Max size: 2MB.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" value="{{ username }}" placeholder="Enter your username">
+                    <div class="form-text">This is how your name will appear on WallpaperHub. Note: Spaces and special characters may be replaced with underscores for system compatibility.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio" class="form-label">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control" rows="4" placeholder="Tell us a bit about yourself">{{ bio }}</textarea>
+                    <div class="form-text">Share a little information about yourself with the community.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                    <div class="form-text">Your email address cannot be changed.</div>
+                </div>
+
+                <div class="btn-container">
+                    <a href="{% url 'profile' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Cancel</span>
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Save Changes</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="toast-notification {{ message.tags }}">
+            <div class="toast-content">
+                <i class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% else %}bi-exclamation-circle-fill{% endif %}"></i>
+                <div class="toast-message">{{ message }}</div>
+            </div>
+            <button class="toast-close">&times;</button>
+            <div class="toast-progress"></div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Profile image preview
+            const profileImageUpload = document.getElementById('profile-image-upload');
+            const profilePreview = document.getElementById('profile-preview');
+
+            if (profileImageUpload && profilePreview) {
+                profileImageUpload.addEventListener('change', function() {
+                    const file = this.files[0];
+
+                    if (file) {
+                        // Check file size (max 2MB)
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('File size exceeds 2MB. Please choose a smaller image.');
+                            this.value = ''; // Clear the input
+                            return;
+                        }
+
+                        // Check file type
+                        if (!file.type.match('image.*')) {
+                            alert('Please select an image file.');
+                            this.value = ''; // Clear the input
+                            return;
+                        }
+
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            profilePreview.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Toast notifications
+            const toastCloseButtons = document.querySelectorAll('.toast-close');
+
+            toastCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const toast = this.parentElement;
+                    toast.style.animation = 'slideOut 0.5s ease forwards';
+
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 500);
+                });
+            });
+
+            // Auto-remove toasts after 5 seconds
+            const toasts = document.querySelectorAll('.toast-notification');
+
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.style.animation = 'slideOut 0.5s ease forwards';
+
+                        setTimeout(() => {
+                            if (toast.parentElement) {
+                                toast.remove();
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            });
+
+            // Hamburger menu functionality
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+            const navOverlay = document.getElementById('navOverlay');
+            const mobileNavClose = document.getElementById('mobileNavClose');
+
+            function toggleMobileNav() {
+                hamburger.classList.toggle('active');
+                mobileNav.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+            }
+
+            function closeMobileNav() {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Event listeners
+            if (hamburger) {
+                hamburger.addEventListener('click', toggleMobileNav);
+            }
+
+            if (navOverlay) {
+                navOverlay.addEventListener('click', closeMobileNav);
+            }
+
+            if (mobileNavClose) {
+                mobileNavClose.addEventListener('click', closeMobileNav);
+            }
+
+            // Close mobile nav when clicking on nav items
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => {
+                item.addEventListener('click', closeMobileNav);
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeMobileNav();
+                }
+            });
+
+            // Sync theme toggles
+            const desktopThemeToggle = document.querySelector('#theme-toggle input');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+
+            if (desktopThemeToggle && mobileThemeToggle) {
+                desktopThemeToggle.addEventListener('change', function() {
+                    mobileThemeToggle.checked = this.checked;
+                });
+
+                mobileThemeToggle.addEventListener('change', function() {
+                    desktopThemeToggle.checked = this.checked;
+                    // Trigger the theme change event
+                    desktopThemeToggle.dispatchEvent(new Event('change'));
+                });
+            }
+        });
+    </script>
+
+    <!-- Theme Toggle Script -->
+    <script src="{% static 'js/sun-moon-toggle.js' %}"></script>
+</body>
+</html>

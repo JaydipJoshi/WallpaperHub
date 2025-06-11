@@ -1,0 +1,33 @@
+[User]
+- id (PK)
+- email
+- username
+- password
+- date_joined
+|
+|
+v
+[Wallpaper]
+- unsplash_id (PK)
+- title
+- description
+- urls {small, regular, full}
+- alt_description
+- created_at
+- views
+- likes
+- downloads
+- shares
+|
+|
+v
+[UserInteraction]
+- id (PK)
+- user_id (FK)
+- wallpaper_id (FK)
+- interaction_type (like/download/share)
+- timestamp
+
+Relationships:
+- User --[1:N]-- UserInteraction
+- Wallpaper --[1:N]-- UserInteraction

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WallpaperHub</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Smooth Scroll CSS -->
+    <link rel="stylesheet" href="{% static 'css/smooth-scroll.css' %}">
+
+    <style>
+        :root {
+            --primary: #65558F;
+            --primary-dark: #534979;
+            --secondary: #F8F6FF;
+            --dark: #333333;
+            --light: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        .auth-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .image-side {
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .image-side {
+                display: block;
+            }
+        }
+
+        .image-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation: slideImages 30s infinite;
+        }
+
+        .slider-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slider-image:nth-child(1) { animation: fadeInOut 15s 0s infinite; }
+        .slider-image:nth-child(2) { animation: fadeInOut 15s 5s infinite; }
+        .slider-image:nth-child(3) { animation: fadeInOut 15s 10s infinite; }
+
+        @keyframes fadeInOut {
+            0%, 45%, 100% { opacity: 0; }
+            15%, 30% { opacity: 1; }
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            color: white;
+            z-index: 1;
+        }
+
+        .image-overlay h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .image-overlay p {
+            font-size: 1.1rem;
+            max-width: 80%;
+            margin-bottom: 2rem;
+        }
+
+        .form-side {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--light);
+        }
+
+        @media (min-width: 992px) {
+            .form-side {
+                width: 50%;
+            }
+        }
+
+        .auth-form-container {
+            max-width: 450px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Form styling */
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(101, 85, 143, 0.25);
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            z-index: 10;
+            background: none;
+            border: none;
+            color: #6c757d;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .auth-footer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .messages {
+            margin-bottom: 1.5rem;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #6c757d;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .btn-google {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            padding: 8px 16px;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            height: 48px;
+            text-decoration: none;
+        }
+
+        .btn-google::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn-google:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            color: #1a73e8;
+            border-color: #1a73e8;
+        }
+
+        .btn-google:hover::before {
+            left: 100%;
+        }
+
+        .google-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            margin-left: 2px;
+        }
+
+        .google-icon-wrapper svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-text {
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+    </style>
+</head>
+<body>
+    {% load socialaccount %}
+    <div class="auth-container">
+        <!-- Image Side with Slider -->
+        <div class="image-side">
+            <div class="image-slider">
+                <img class="slider-image" src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=2070" alt="Sunset Wallpaper">
+                <img class="slider-image" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071" alt="Space Wallpaper">
+                <img class="slider-image" src="https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2106" alt="Neon Wallpaper">
+            </div>
+            <div class="image-overlay">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your personalized collection of stunning wallpapers.</p>
+                <a href="/landingPage" class="btn btn-outline-light px-4 py-2 rounded-pill">Learn More</a>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="form-side">
+            <div class="auth-form-container">
+                <!-- Logo and Heading Combined -->
+                <div class="text-center mb-4">
+                    <div class="d-flex justify-content-center align-items-center mb-3" >
+                        <a href="/landingPage">
+                            <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" class="me-2" width="50" height="50" style="border-radius: 10px;">
+                        </a>
+                        <span class="fs-2 fw-bold text-primary">WallpaperHub</span>
+                    </div>
+                    <h2 class="fw-bold">Welcome Back</h2>
+                    <p class="text-muted">Sign in to your account</p>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Login Form -->
+                <form method="POST" action="/login/">
+                    {% csrf_token %}
+
+                    <!-- Email Field -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                        <label for="email">Email address</label>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-floating mb-4 password-field">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                            <i class="bi bi-eye" id="password-icon"></i>
+                        </button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Google Sign In -->
+                <div class="d-grid mb-4">
+                    <a href="/accounts/google/login/?process=login" class="btn btn-google">
+                        <div class="google-icon-wrapper">
+                            <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            </svg>
+                        </div>
+                        <span class="btn-text flex-grow-1 text-center">Sign in with Google</span>
+                    </a>
+                </div>
+
+                <!-- Footer Link -->
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="/signUpPage">Sign Up</a></p>
+                </div>
+
+                <!-- Forgot Password -->
+                <div class="text-center mt-3">
+                    <a href="/forgot-password/" class="text-decoration-none text-muted small">
+                        <i class="bi bi-key me-1"></i>Forgot your password?
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(inputId + '-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+
+        // Auto-hide messages after 3 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.alert');
+            if (messages.length > 0) {
+                setTimeout(function() {
+                    messages.forEach(function(message) {
+                        message.style.display = 'none';
+                    });
+                }, 3000);
+            }
+        });
+    </script>
+
+    <!-- Smooth Scrolling Script -->
+    <script src="{% static 'js/smooth-scroll.js' %}"></script>
+
+    <!-- Include Cookie Consent Banner -->
+    {% include 'cookie_consent_include.html' %}
+</body>
+</html>

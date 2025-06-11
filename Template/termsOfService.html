@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - WallpaperHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-theme-switch.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+    <script src="{% static 'js/custom-theme-switch.js' %}"></script>
+    <style>
+        /* Side Drawer Styles */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--card-bg, #FFFFFF);
+            z-index: 1050;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .side-drawer.active {
+            right: 0;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+        }
+
+        .drawer-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary, #65558F);
+        }
+
+        .close-drawer {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color, #333333);
+        }
+
+        .drawer-divider {
+            height: 1px;
+            background-color: var(--border-color, #e0e0e0);
+            margin: 0.5rem 0;
+        }
+
+        .drawer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: var(--text-color, #333333);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+            transition: all 0.2s ease;
+        }
+
+        .drawer-item i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--primary, #65558F);
+        }
+
+        .drawer-item:hover,
+        .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.1);
+        }
+
+        .drawer-item.login-btn {
+            background-color: var(--primary, #65558F);
+            color: white;
+            margin: 1rem;
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .drawer-item.login-btn i {
+            color: white;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .side-drawer {
+            background-color: var(--card-bg, #161B27);
+        }
+
+        [data-theme="dark"] .drawer-header,
+        [data-theme="dark"] .drawer-divider,
+        [data-theme="dark"] .drawer-item {
+            border-color: var(--border-color, #1E2433);
+        }
+
+        [data-theme="dark"] .drawer-item {
+            color: var(--text-color, #E0E0E0);
+        }
+
+        [data-theme="dark"] .drawer-item:hover,
+        [data-theme="dark"] .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.2);
+        }
+
+        :root {
+            --primary: #65558F;
+            --primary-dark: #534979;
+            --secondary: #F8F6FF;
+            --dark: #333333;
+            --light: #FFFFFF;
+            --gray: #F5F5F5;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar {
+            transition: all 0.3s ease;
+            background-color: var(--navbar-bg);
+            box-shadow: 0 2px 10px var(--card-shadow);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark);
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--text-color);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .last-updated {
+            font-style: italic;
+            color: var(--footer-text);
+            margin-top: 2rem;
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast-notification {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            box-shadow: 0 5px 15px var(--card-shadow);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            animation: slideIn 0.5s ease forwards;
+            position: relative;
+        }
+
+        .toast-notification.success {
+            border-left: 5px solid #4CAF50;
+        }
+
+        .toast-notification.error {
+            border-left: 5px solid #F44336;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .toast-notification.success .toast-icon {
+            color: #4CAF50;
+        }
+
+        .toast-notification.error .toast-icon {
+            color: #F44336;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .toast-progress {
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast-notification {{ message.tags }}">
+                    <div class="toast-content">
+                        <i class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+                        <div class="toast-message">{{ message }}</div>
+                    </div>
+                    <button class="toast-close">&times;</button>
+                    <div class="toast-progress"></div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </a>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userHome">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutUs.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/termsOfService.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/privacyPolicy.html">Privacy</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item ms-lg-3 user-profile">
+                      <div class="profile-photo">
+                        <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+                      </div>
+                      <div class="user-dropdown">
+                        <div class="dropdown-header">{{ user.email }}</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+                        <a href="{% url 'user_home' %}" class="dropdown-item"><i class="bi bi-grid"></i> User Home</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                      </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary rounded-pill px-4" href="/loginpage">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </div>
+            <button class="close-drawer" onclick="toggleSideDrawer(event);">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-divider"></div>
+        <ul class="drawer-links">
+            <li><a href="/" class="drawer-item"><i class="bi bi-house"></i> Home</a></li>
+            <li><a href="/userHome" class="drawer-item"><i class="bi bi-compass"></i> Explore</a></li>
+            <li><a href="/aboutUs.html" class="drawer-item"><i class="bi bi-info-circle"></i> About Us</a></li>
+            <li><a href="/termsOfService.html" class="drawer-item active"><i class="bi bi-file-text"></i> Terms</a></li>
+            <li><a href="/privacyPolicy.html" class="drawer-item"><i class="bi bi-shield-check"></i> Privacy</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Account</a></li>
+            <li><a href="{% url 'user_home' %}" class="drawer-item"><i class="bi bi-grid"></i> User Home</a></li>
+            <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+            <li><a href="/loginpage" class="drawer-item login-btn"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>
+
+    <!-- Page Header -->
+    <header class="page-header mt-5">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Terms of Service</h1>
+            <p class="lead">Please read these terms carefully before using WallpaperHub</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="content-card">
+            <div class="mb-4">
+                <p>Welcome to WallpaperHub. By accessing or using our website, you agree to be bound by these Terms of Service. If you disagree with any part of these terms, you may not access our service.</p>
+            </div>
+
+            <section class="mb-5">
+                <h2 class="section-title">1. Acceptance of Terms</h2>
+                <p>By accessing or using WallpaperHub, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service, as well as our Privacy Policy. These Terms constitute a legally binding agreement between you and WallpaperHub.</p>
+                <p>We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting on the website. Your continued use of WallpaperHub after any changes indicates your acceptance of the modified Terms.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">2. User Accounts</h2>
+                <p>To access certain features of WallpaperHub, you may need to create an account. You are responsible for:</p>
+                <ul>
+                    <li>Maintaining the confidentiality of your account credentials</li>
+                    <li>All activities that occur under your account</li>
+                    <li>Ensuring that all information you provide is accurate and up-to-date</li>
+                </ul>
+                <p>We reserve the right to terminate or suspend accounts at our discretion, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties, or for any other reason.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">3. User Content and Responsibilities</h2>
+                <p>When you upload, share, or submit content to WallpaperHub, you:</p>
+                <ul>
+                    <li>Retain ownership rights to your content</li>
+                    <li>Grant WallpaperHub a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, translate, and distribute your content across our platform</li>
+                    <li>Represent and warrant that you own or have the necessary rights to the content you submit</li>
+                    <li>Understand that all content you submit may be viewed by other users</li>
+                </ul>
+                <p>You are solely responsible for your content and the consequences of sharing it. You agree not to upload, share, or submit content that:</p>
+                <ul>
+                    <li>Is illegal, harmful, threatening, abusive, harassing, defamatory, or invasive of another's privacy</li>
+                    <li>Infringes on any patent, trademark, trade secret, copyright, or other intellectual property rights</li>
+                    <li>Contains software viruses or any other code designed to interrupt, destroy, or limit the functionality of computer software or hardware</li>
+                    <li>Constitutes unauthorized advertising, spam, or any form of solicitation</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">4. Copyright Policy</h2>
+                <p>WallpaperHub respects the intellectual property rights of others and expects users to do the same. We will respond to notices of alleged copyright infringement that comply with applicable law.</p>
+                <p>If you believe that your content has been copied in a way that constitutes copyright infringement, please provide us with the following information:</p>
+                <ul>
+                    <li>A physical or electronic signature of the copyright owner or a person authorized to act on their behalf</li>
+                    <li>Identification of the copyrighted work claimed to have been infringed</li>
+                    <li>Identification of the material that is claimed to be infringing and where it is located on the service</li>
+                    <li>Your contact information, including your address, telephone number, and an email address</li>
+                    <li>A statement that you have a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or law</li>
+                    <li>A statement, made under penalty of perjury, that the above information is accurate, and that you are the copyright owner or are authorized to act on behalf of the owner</li>
+                </ul>
+                <p>We reserve the right to remove content alleged to be infringing without prior notice, at our sole discretion, and without liability to you.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">5. Service Usage and Limitations</h2>
+                <p>WallpaperHub provides a platform for users to discover, share, and download wallpapers. While we strive to ensure high availability, we do not guarantee that the service will be:</p>
+                <ul>
+                    <li>Uninterrupted or error-free</li>
+                    <li>Free from loss, corruption, attack, viruses, interference, hacking, or other security intrusion</li>
+                </ul>
+                <p>We reserve the right to:</p>
+                <ul>
+                    <li>Modify, suspend, or discontinue any part of the service without notice</li>
+                    <li>Establish general practices and limits concerning use of the service</li>
+                    <li>Refuse service to anyone for any reason at any time</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">6. Disclaimer of Warranties</h2>
+                <p>WallpaperHub is provided "as is" and "as available" without any warranties of any kind, either express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+                <p>We do not warrant that:</p>
+                <ul>
+                    <li>The service will meet your specific requirements</li>
+                    <li>The service will be uninterrupted, timely, secure, or error-free</li>
+                    <li>The results that may be obtained from the use of the service will be accurate or reliable</li>
+                    <li>The quality of any products, services, information, or other material purchased or obtained by you through the service will meet your expectations</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">7. Limitation of Liability</h2>
+                <p>In no event shall WallpaperHub, its directors, employees, partners, agents, suppliers, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:</p>
+                <ul>
+                    <li>Your access to or use of or inability to access or use the service</li>
+                    <li>Any conduct or content of any third party on the service</li>
+                    <li>Any content obtained from the service</li>
+                    <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">8. Governing Law</h2>
+                <p>These Terms shall be governed and construed in accordance with the laws applicable in your jurisdiction, without regard to its conflict of law provisions.</p>
+                <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
+            </section>
+
+            <section>
+                <h2 class="section-title">9. Contact Us</h2>
+                <p>If you have any questions about these Terms, please contact us at:</p>
+                <p><strong>Email:</strong> support@wallpaperhub.com</p>
+            </section>
+
+            <div class="last-updated">
+                <p>Last updated: April 08, 2025</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">WallpaperHub</h5>
+                    <p>Discover and share the most beautiful wallpapers for all your devices.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/userHome">Explore</a></li>
+                        <li><a href="/aboutUs.html">About Us</a></li>
+                        <li><a href="/termsOfService.html">Terms of Service</a></li>
+                        <li><a href="/privacyPolicy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Connect With Us</h5>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 WallpaperHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- User Profile Script -->
+    <script src="{% static 'js/user-profile.js' %}" defer></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Function to toggle side drawer
+        function toggleSideDrawer(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('Toggle side drawer called');
+
+            var sideDrawer = document.getElementById('side-drawer');
+            var overlay = document.getElementById('drawer-overlay');
+
+            if (sideDrawer) {
+                sideDrawer.classList.toggle('active');
+
+                if (overlay) {
+                    overlay.classList.toggle('active');
+                }
+
+                // Prevent body scrolling when drawer is open
+                if (sideDrawer.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prevent Bootstrap's default navbar toggler behavior
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSideDrawer(e);
+                    return false;
+                });
+            }
+
+            // Disable Bootstrap's collapse functionality
+            const bsCollapse = document.getElementById('navbarNav');
+            if (bsCollapse) {
+                bsCollapse.classList.remove('collapse');
+                bsCollapse.classList.add('d-none', 'd-lg-block');
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white', 'shadow');
+                } else {
+                    navbar.classList.remove('bg-white', 'shadow');
+                }
+            });
+
+            // Toast notification handling
+            const toastContainer = document.getElementById('toast-container');
+            const toasts = document.querySelectorAll('.toast-notification');
+
+            // Function to remove a toast
+            function removeToast(toast) {
+                toast.style.animation = 'slideOut 0.5s ease forwards';
+                setTimeout(() => {
+                    toast.remove();
+                    // If no more toasts, remove the container
+                    if (toastContainer && toastContainer.children.length === 0) {
+                        toastContainer.remove();
+                    }
+                }, 500);
+            }
+
+            // Add click event to close buttons
+            document.querySelectorAll('.toast-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const toast = this.parentElement;
+                    removeToast(toast);
+                });
+            });
+
+            // Auto-remove toasts after 5 seconds
+            if (toasts.length > 0) {
+                toasts.forEach(toast => {
+                    setTimeout(() => {
+                        if (toast.parentElement) {
+                            removeToast(toast);
+                        }
+                    }, 5000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

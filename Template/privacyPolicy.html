@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - WallpaperHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <link rel="alternate icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Theme Styles -->
+    <link rel="stylesheet" href="{% static 'css/theme-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-theme-switch.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user-profile.css' %}">
+    <script src="{% static 'js/theme-init.js' %}"></script>
+    <script src="{% static 'js/custom-theme-switch.js' %}"></script>
+    <style>
+        /* Side Drawer Styles */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--card-bg, #FFFFFF);
+            z-index: 1050;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .side-drawer.active {
+            right: 0;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+        }
+
+        .drawer-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary, #65558F);
+        }
+
+        .close-drawer {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color, #333333);
+        }
+
+        .drawer-divider {
+            height: 1px;
+            background-color: var(--border-color, #e0e0e0);
+            margin: 0.5rem 0;
+        }
+
+        .drawer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: var(--text-color, #333333);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color, #e0e0e0);
+            transition: all 0.2s ease;
+        }
+
+        .drawer-item i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--primary, #65558F);
+        }
+
+        .drawer-item:hover,
+        .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.1);
+        }
+
+        .drawer-item.login-btn {
+            background-color: var(--primary, #65558F);
+            color: white;
+            margin: 1rem;
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        .drawer-item.login-btn i {
+            color: white;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .side-drawer {
+            background-color: var(--card-bg, #161B27);
+        }
+
+        [data-theme="dark"] .drawer-header,
+        [data-theme="dark"] .drawer-divider,
+        [data-theme="dark"] .drawer-item {
+            border-color: var(--border-color, #1E2433);
+        }
+
+        [data-theme="dark"] .drawer-item {
+            color: var(--text-color, #E0E0E0);
+        }
+
+        [data-theme="dark"] .drawer-item:hover,
+        [data-theme="dark"] .drawer-item.active {
+            background-color: rgba(101, 85, 143, 0.2);
+        }
+
+        :root {
+            --primary: #65558F;
+            --primary-dark: #534979;
+            --secondary: #F8F6FF;
+            --dark: #333333;
+            --light: #FFFFFF;
+            --gray: #F5F5F5;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar {
+            transition: all 0.3s ease;
+            background-color: var(--navbar-bg);
+            box-shadow: 0 2px 10px var(--card-shadow);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark);
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2070') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--text-color);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .social-icon {
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .last-updated {
+            margin-top: 3rem;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast-notification {
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: white;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 15px;
+            color: #999;
+        }
+
+        .toast-progress {
+            position: relative;
+            height: 4px;
+            width: 100%;
+        }
+
+        .toast-notification.success .toast-icon {
+            color: #4CAF50;
+        }
+
+        .toast-notification.error .toast-icon {
+            color: #F44336;
+        }
+
+        .toast-notification.warning .toast-icon {
+            color: #FF9800;
+        }
+
+        .toast-notification.info .toast-icon {
+            color: #2196F3;
+        }
+
+        .toast-progress::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            background-color: currentColor;
+            animation: progress 5s linear forwards;
+        }
+
+        .toast-notification.success .toast-progress::before {
+            background-color: #4CAF50;
+        }
+
+        .toast-notification.error .toast-progress::before {
+            background-color: #F44336;
+        }
+
+        .toast-notification.warning .toast-progress::before {
+            background-color: #FF9800;
+        }
+
+        .toast-notification.info .toast-progress::before {
+            background-color: #2196F3;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 3rem 0;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .footer {
+                padding: 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="toast-notification {{ message.tags }}">
+                    <div class="toast-content">
+                        <i class="toast-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-exclamation-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+                        <div class="toast-message">{{ message }}</div>
+                    </div>
+                    <button class="toast-close">&times;</button>
+                    <div class="toast-progress"></div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </a>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userHome">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutUs.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/termsOfService.html">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/privacyPolicy.html">Privacy</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item ms-lg-3 user-profile">
+                      <div class="profile-photo">
+                        <img src="https://ui-avatars.com/api/?name={{ user.email|urlencode }}&background=65558f&color=fff&size=128" alt="{{ user.email }}" title="{{ user.email }}">
+                      </div>
+                      <div class="user-dropdown">
+                        <div class="dropdown-header">{{ user.email }}</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'profile' %}" class="dropdown-item"><i class="bi bi-person"></i> My Account</a>
+                        <a href="{% url 'user_home' %}" class="dropdown-item"><i class="bi bi-grid"></i> User Home</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                      </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary rounded-pill px-4" href="/loginpage">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side drawer for mobile navigation -->
+    <div class="side-drawer" id="side-drawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="{% static 'Design6.jpg' %}" alt="WallpaperHub Logo" width="40" class="me-2 rounded-3">
+                <span>WallpaperHub</span>
+            </div>
+            <button class="close-drawer" onclick="toggleSideDrawer(event);">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="drawer-divider"></div>
+        <ul class="drawer-links">
+            <li><a href="/" class="drawer-item"><i class="bi bi-house"></i> Home</a></li>
+            <li><a href="/userHome" class="drawer-item"><i class="bi bi-compass"></i> Explore</a></li>
+            <li><a href="/aboutUs.html" class="drawer-item"><i class="bi bi-info-circle"></i> About Us</a></li>
+            <li><a href="/termsOfService.html" class="drawer-item"><i class="bi bi-file-text"></i> Terms</a></li>
+            <li><a href="/privacyPolicy.html" class="drawer-item active"><i class="bi bi-shield-check"></i> Privacy</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}" class="drawer-item"><i class="bi bi-person"></i> My Account</a></li>
+            <li><a href="{% url 'user_home' %}" class="drawer-item"><i class="bi bi-grid"></i> User Home</a></li>
+            <li><a href="{% url 'logout' %}" class="drawer-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            {% else %}
+            <li><a href="/loginpage" class="drawer-item login-btn"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Overlay for side drawer -->
+    <div class="drawer-overlay" id="drawer-overlay" onclick="toggleSideDrawer(event);"></div>
+
+    <!-- Page Header -->
+    <header class="page-header mt-5">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Privacy Policy</h1>
+            <p class="lead">How we collect, use, and protect your information</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="content-card">
+            <div class="mb-4">
+                <p>At WallpaperHub, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our website.</p>
+                <p>We've designed this policy to be clear and straightforward, avoiding complex legal jargon wherever possible. If you have any questions about our privacy practices, please contact us.</p>
+            </div>
+
+            <section class="mb-5">
+                <h2 class="section-title">1. Information We Collect</h2>
+                <p>We collect several types of information to provide and improve our service to you:</p>
+
+                <h4 class="mt-4 mb-3">1.1 Information You Provide</h4>
+                <ul>
+                    <li><strong>Account Information:</strong> When you register, we collect your email address, username, and password.</li>
+                    <li><strong>Profile Information:</strong> You may choose to provide additional information such as a profile picture, bio, or preferences.</li>
+                    <li><strong>Content:</strong> Any wallpapers you upload, comments you make, or collections you create.</li>
+                    <li><strong>Communications:</strong> Information you provide when contacting us for support or feedback.</li>
+                </ul>
+
+                <h4 class="mt-4 mb-3">1.2 Information Collected Automatically</h4>
+                <ul>
+                    <li><strong>Usage Data:</strong> Information about how you interact with our service, such as pages visited, time spent, and actions taken.</li>
+                    <li><strong>Device Information:</strong> Device type, operating system, browser type, screen resolution, and other technical information.</li>
+                    <li><strong>Location Information:</strong> General location information based on IP address.</li>
+                    <li><strong>Cookies and Similar Technologies:</strong> We use cookies and similar tracking technologies to enhance your experience and collect information about how you use our service.</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">2. How We Use Your Information</h2>
+                <p>We use the information we collect for various purposes, including:</p>
+                <ul>
+                    <li><strong>Providing and Maintaining the Service:</strong> To create and manage your account, deliver the features you request, and personalize your experience.</li>
+                    <li><strong>Improving Our Service:</strong> To understand how users interact with our platform and identify areas for enhancement.</li>
+                    <li><strong>Communications:</strong> To respond to your inquiries, send service-related announcements, and provide customer support.</li>
+                    <li><strong>Personalization:</strong> To recommend wallpapers and content that may interest you based on your preferences and activity.</li>
+                    <li><strong>Security:</strong> To detect, prevent, and address technical issues, fraud, or other harmful activities.</li>
+                    <li><strong>Legal Compliance:</strong> To comply with applicable laws, regulations, and legal processes.</li>
+                </ul>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">3. How We Share Your Information</h2>
+                <p>We may share your information in the following circumstances:</p>
+                <ul>
+                    <li><strong>With Service Providers:</strong> Third-party vendors who provide services on our behalf, such as hosting, analytics, and customer support.</li>
+                    <li><strong>For Legal Reasons:</strong> When required by law, regulation, legal process, or governmental request.</li>
+                    <li><strong>With Your Consent:</strong> When you have explicitly consented to the sharing of your information.</li>
+                    <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of all or a portion of our assets.</li>
+                </ul>
+                <p>We do not sell your personal information to third parties.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">4. Your Rights and Choices</h2>
+                <p>Depending on your location, you may have certain rights regarding your personal information:</p>
+                <ul>
+                    <li><strong>Access and Update:</strong> You can access and update your account information through your profile settings.</li>
+                    <li><strong>Data Portability:</strong> You can request a copy of your personal information in a structured, commonly used format.</li>
+                    <li><strong>Deletion:</strong> You can request the deletion of your account and associated personal information.</li>
+                    <li><strong>Objection and Restriction:</strong> You can object to or request restriction of the processing of your personal information.</li>
+                    <li><strong>Opt-Out:</strong> You can opt out of marketing communications and certain data collection practices.</li>
+                </ul>
+                <p>To exercise these rights, please contact us using the information provided in the "Contact Us" section.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">5. Data Security</h2>
+                <p>We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure, so we cannot guarantee absolute security.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">6. Children's Privacy</h2>
+                <p>Our service is not intended for children under the age of 13, and we do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us, and we will take steps to delete such information.</p>
+            </section>
+
+            <section class="mb-5">
+                <h2 class="section-title">7. Changes to This Privacy Policy</h2>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+                <p>We encourage you to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+            </section>
+
+            <section>
+                <h2 class="section-title">8. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
+                <p><strong>Email:</strong> privacy@wallpaperhub.com</p>
+            </section>
+
+            <div class="last-updated">
+                <p>Last updated: May 15, 2025</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">WallpaperHub</h5>
+                    <p>Discover and share the most beautiful wallpapers for all your devices.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/userHome">Explore</a></li>
+                        <li><a href="/aboutUs.html">About Us</a></li>
+                        <li><a href="/termsOfService.html">Terms of Service</a></li>
+                        <li><a href="/privacyPolicy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Connect With Us</h5>
+                    <div class="d-flex gap-3 fs-4">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 WallpaperHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- User Profile Script -->
+    <script src="{% static 'js/user-profile.js' %}" defer></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Function to toggle side drawer
+        function toggleSideDrawer(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('Toggle side drawer called');
+
+            var sideDrawer = document.getElementById('side-drawer');
+            var overlay = document.getElementById('drawer-overlay');
+
+            if (sideDrawer) {
+                sideDrawer.classList.toggle('active');
+
+                if (overlay) {
+                    overlay.classList.toggle('active');
+                }
+
+                // Prevent body scrolling when drawer is open
+                if (sideDrawer.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Prevent Bootstrap's default navbar toggler behavior
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSideDrawer(e);
+                    return false;
+                });
+            }
+
+            // Disable Bootstrap's collapse functionality
+            const bsCollapse = document.getElementById('navbarNav');
+            if (bsCollapse) {
+                bsCollapse.classList.remove('collapse');
+                bsCollapse.classList.add('d-none', 'd-lg-block');
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-white', 'shadow');
+                } else {
+                    navbar.classList.remove('bg-white', 'shadow');
+                }
+            });
+
+            // Toast notification handling
+            const toastContainer = document.getElementById('toast-container');
+            const toasts = document.querySelectorAll('.toast-notification');
+
+            // Function to remove a toast
+            function removeToast(toast) {
+                toast.style.animation = 'slideOut 0.5s ease forwards';
+                setTimeout(() => {
+                    toast.remove();
+                    // If no more toasts, remove the container
+                    if (toastContainer && toastContainer.children.length === 0) {
+                        toastContainer.remove();
+                    }
+                }, 500);
+            }
+
+            // Add click event to close buttons
+            document.querySelectorAll('.toast-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const toast = this.parentElement;
+                    removeToast(toast);
+                });
+            });
+
+            // Auto-remove toasts after 5 seconds
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    removeToast(toast);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
